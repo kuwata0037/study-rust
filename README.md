@@ -4,8 +4,14 @@ Rust learning
 Rust 言語およびライブラリの個人学習用リポジトリ．
 
 ## ワークスペース
+
+### [実践Rustプログラミング入門]
+- [itrp_samplecli](itrp_samplecli)
+    -  Chapter4 の写経コード
  
+### [プログラミングRust]
 - [programming_rust](programming_rust)
-    - [プログラミングRust] を写経したコード．
+
 
 [プログラミングRust]: https://www.oreilly.co.jp/books/9784873118550/
+[実践Rustプログラミング入門]: https://www.shuwasystem.co.jp/book/9784798061702.html

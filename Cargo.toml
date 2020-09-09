@@ -1,4 +1,5 @@
 [workspace]
 members = [
+    "itrp_samplecli",
     "programming_rust"
 ]
