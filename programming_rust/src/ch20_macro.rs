@@ -5,7 +5,7 @@ macro_rules! my_assert_eq {
             (left_val, right_val) => {
                 if !(*left_val == *right_val) {
                     panic!(
-                        "assertion fialed: `(left == right)` (left: `{:?}`, right: `{:?}`)",
+                        "assertion failed: `(left == right)` (left: `{:?}`, right: `{:?}`)",
                         left_val, right_val
                     );
                 }
@@ -29,8 +29,6 @@ macro_rules! my_vec {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
     fn test_my_assert_eq() {
         my_assert_eq!(1 << 10, 1024);
