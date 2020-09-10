@@ -25,11 +25,15 @@ fn main() {
     if let Some(path) = opts.formula_file {
         let f = File::open(path).unwrap();
         let reader = BufReader::new(f);
-        for line in reader.lines() {
-            let line = line.unwrap();
-            println!("{}", line);
-        }
+        run(reader, opts.verbose);
     } else {
         println!("No file specified");
+    }
+}
+
+fn run(reader: BufReader<File>, _verbose: bool) {
+    for line in reader.lines() {
+        let line = line.unwrap();
+        println!("{}", line);
     }
 }
