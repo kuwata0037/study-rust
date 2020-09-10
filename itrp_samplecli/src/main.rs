@@ -1,6 +1,6 @@
 use clap::Clap;
 use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::{stdin, BufRead, BufReader};
 
 #[derive(Clap, Debug)]
 #[clap(
@@ -27,11 +27,13 @@ fn main() {
         let reader = BufReader::new(f);
         run(reader, opts.verbose);
     } else {
-        println!("No file specified");
+        let stdin = stdin();
+        let reader = stdin.lock();
+        run(reader, opts.verbose);
     }
 }
 
-fn run(reader: BufReader<File>, _verbose: bool) {
+fn run<R: BufRead>(reader: R, _verbose: bool) {
     for line in reader.lines() {
         let line = line.unwrap();
         println!("{}", line);
