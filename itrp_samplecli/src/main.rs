@@ -27,7 +27,41 @@ impl RpnCalculator {
     }
 
     pub fn eval(&self, formula: &str) -> i32 {
-        0
+        let mut tokens = formula.split_whitespace().rev().collect::<Vec<_>>();
+        self.eval_inner(&mut tokens)
+    }
+
+    fn eval_inner(&self, tokens: &mut Vec<&str>) -> i32 {
+        let mut stack = Vec::new();
+        while let Some(token) = tokens.pop() {
+            if let Ok(v) = token.parse::<i32>() {
+                stack.push(v);
+            } else {
+                let y = stack.pop().expect("Invalid syntax");
+                let x = stack.pop().expect("Invalid syntax");
+
+                let res = match token {
+                    "+" => x + y,
+                    "-" => x - y,
+                    "*" => x * y,
+                    "/" => x / y,
+                    "%" => x % y,
+                    _ => panic!("Invalid syntax"),
+                };
+
+                stack.push(res);
+            }
+
+            if self.0 {
+                println!("{:?} {:?}", tokens, stack);
+            }
+        }
+
+        if stack.len() == 1 {
+            stack[0]
+        } else {
+            panic!("Invalid syntax");
+        }
     }
 }
 
