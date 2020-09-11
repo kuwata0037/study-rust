@@ -8,6 +8,9 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
 ### [実践Rustプログラミング入門]
 - [itrp_samplecli](itrp_samplecli)
     -  Chapter4 の写経コード
+    
+- [itrp_todo](itrp_todo)
+    - Chapter5 の写経コード
  
 ### [プログラミングRust]
 - [programming_rust](programming_rust)
