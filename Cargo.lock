@@ -832,6 +832,7 @@ dependencies = [
  "r2d2 0.8.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "r2d2_sqlite 0.16.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rusqlite 0.23.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.115 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror 1.0.20 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

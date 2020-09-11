@@ -1,9 +1,20 @@
-use actix_web::{get, HttpResponse, HttpServer, App, ResponseError, web};
+use actix_web::{get, http::header, post, HttpResponse, HttpServer, App, ResponseError, web};
 use thiserror::Error;
 use askama::Template;
 use r2d2_sqlite::SqliteConnectionManager;
 use r2d2::Pool;
 use rusqlite::params;
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+struct AddParams {
+    text: String
+}
+
+#[derive(Deserialize)]
+struct DeleteParams {
+    id: u32
+}
 
 struct TodoEntry {
     id: u32,
@@ -15,6 +26,7 @@ struct TodoEntry {
 struct IndexTemplate {
     entries: Vec<TodoEntry>
 }
+
 
 #[derive(Error, Debug)]
 enum MyError {
@@ -29,6 +41,20 @@ enum MyError {
 }
 
 impl ResponseError for MyError {}
+
+#[post("/add")]
+async fn add_todo(params: web::Form<AddParams>, db: web::Data<Pool<SqliteConnectionManager>>) -> Result<HttpResponse, MyError> {
+    let conn = db.get()?;
+    conn.execute("INSERT INTO todo (text) VALUES (?)", &[&params.text])?;
+    Ok(HttpResponse::SeeOther().header(header::LOCATION, "/").finish())
+}
+
+#[post("/delete")]
+async fn delete_todo(params: web::Form<DeleteParams>, db: web::Data<Pool<SqliteConnectionManager>>) -> Result<HttpResponse, MyError> {
+    let conn = db.get()?;
+    conn.execute("DELETE FROM todo WHERE id = ?", &[params.id])?;
+    Ok(HttpResponse::SeeOther().header(header::LOCATION, "/").finish())
+}
 
 #[get("/")]
 async fn index(db: web::Data<Pool<SqliteConnectionManager>>) -> Result<HttpResponse, MyError> {
@@ -62,7 +88,13 @@ async fn main() -> Result<(), actix_web::Error> {
         params![], ).expect("Failed to create a table `todo`.");
 
 
-    HttpServer::new(move || App::new().service(index).data(pool.clone()))
+    HttpServer::new(move || {
+        App::new()
+            .service(index)
+            .service(add_todo)
+            .service(delete_todo)
+            .data(pool.clone())
+    })
         .bind("127.0.0.1:8080")?
         .run()
         .await?;
