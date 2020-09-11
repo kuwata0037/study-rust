@@ -1,5 +1,5 @@
 [package]
-name = "itrp_samplecli"
+name = "rpncalc"
 version = "0.1.0"
 authors = ["kuwata0037 <kuwata0037@gmail.com>"]
 edition = "2018"
