@@ -8,6 +8,8 @@
       <sourceFolder url="file://$MODULE_DIR$/programming_rust/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/itrp_samplecli/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/itrp_todo/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/itrp-mandelbrot/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/itrp-mandelbrot/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
