@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "itrp-mandelbrot",
     "itrp_samplecli",
     "itrp_todo",
     "programming_rust"
