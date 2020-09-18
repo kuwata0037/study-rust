@@ -14,6 +14,9 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
 
 - [itrp-mandelbrot](itrp-mandelbrot)
     - Chapter6 の写経コード
+    
+- [itrp-numberplace](itrp-numberplace)
+    - Chapter6 の写経コード
  
 ### [プログラミングRust]
 - [programming_rust](programming_rust)
