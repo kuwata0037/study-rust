@@ -4,5 +4,6 @@ members = [
     "itrp-numberplace",
     "itrp_samplecli",
     "itrp_todo",
+    "itrp_ui_demo",
     "programming_rust"
 ]

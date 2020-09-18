@@ -17,7 +17,10 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
     
 - [itrp-numberplace](itrp-numberplace)
     - Chapter6 の写経コード
- 
+
+ - [itrp_ui_demo](itrp_ui_demo)
+     - Chapter7 の写経コード
+
 ### [プログラミングRust]
 - [programming_rust](programming_rust)
 
