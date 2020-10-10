@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/itrp-numberplace/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/itrp-numberplace/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/itrp_ui_demo/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cookbook/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
