@@ -24,4 +24,5 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
 ### [プログラミングRust](https://www.oreilly.co.jp/books/9784873118550/)
 - [programming_rust](programming_rust)
 
-
+### [Rust Cookbook](https://rust-lang-nursery.github.io/rust-cookbook/)
+- [cookbook](cookbook)
