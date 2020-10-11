@@ -86,4 +86,37 @@ mod tests {
             assert_eq!(msg, i);
         }
     }
+
+    #[test]
+    fn maintain_global_mutable_state() -> Result<(), &'static str> {
+        use lazy_static::lazy_static;
+        use std::sync::Mutex;
+
+        lazy_static! {
+            static ref FRUIT: Mutex<Vec<String>> = Mutex::new(Vec::new());
+        }
+
+        fn insert(fruit: &str) -> Result<(), &'static str> {
+            let mut db = FRUIT.lock().map_err(|_| "Failed to acquire MutexGuard")?;
+            db.push(fruit.to_string());
+            Ok(())
+        }
+
+        insert("apple")?;
+        insert("orange")?;
+        insert("peach")?;
+        {
+            let db = FRUIT.lock().map_err(|_| "Failed to acquire mutexGuard")?;
+            let vec = db
+                .iter()
+                .enumerate()
+                .map(|(i, item)| format!("{}: {}", i, item))
+                .collect::<Vec<_>>();
+            assert_eq!(vec[0], "0: apple");
+            assert_eq!(vec[1], "1: orange");
+            assert_eq!(vec[2], "2: peach");
+        }
+        insert("grape")?;
+        Ok(())
+    }
 }

@@ -883,6 +883,7 @@ version = "0.1.0"
 dependencies = [
  "ansi_term",
  "crossbeam",
+ "lazy_static",
  "rand",
  "rand_distr",
 ]
