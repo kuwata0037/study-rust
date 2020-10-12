@@ -13,3 +13,5 @@ ansi_term = "0.12.1"
 crossbeam = "0.7.3"
 lazy_static = "1.4.0"
 rayon = "1.4.1"
+bitflags = "1.2.1"
+

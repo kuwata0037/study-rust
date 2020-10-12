@@ -882,6 +882,7 @@ name = "cookbook"
 version = "0.1.0"
 dependencies = [
  "ansi_term",
+ "bitflags",
  "crossbeam",
  "lazy_static",
  "rand",
