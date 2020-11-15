@@ -3,18 +3,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/gcd/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/macros/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/programming_rust/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp_samplecli/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp_todo/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp-mandelbrot/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp-mandelbrot/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp-mandelbrot/benches" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp-numberplace/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp-numberplace/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/itrp_ui_demo/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/cookbook/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/bicycle-book/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
