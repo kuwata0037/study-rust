@@ -1,4 +1,4 @@
-Rust learning
+Rust Learning
 ==============
 
 Rust 言語およびライブラリの個人学習用リポジトリ．
