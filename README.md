@@ -7,3 +7,6 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
 
 - [bicycle-book](./bicycle-book)
     - [実践Rust入門](https://gihyo.jp/book/2019/978-4-297-10559-4)
+
+- [std](./std)
+    - 標準ライブラリ
