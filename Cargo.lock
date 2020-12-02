@@ -5,5 +5,9 @@ name = "bicycle-book"
 version = "0.1.0"
 
 [[package]]
+name = "crates"
+version = "0.1.0"
+
+[[package]]
 name = "std"
 version = "0.1.0"
