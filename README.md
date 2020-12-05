@@ -9,7 +9,7 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
     - [実践Rust入門](https://gihyo.jp/book/2019/978-4-297-10559-4)
 
 ### ライブラリ
-- [std](./std)
+- [std-lib](std-lib)
     - 標準ライブラリ
 
 - [crates](./crates)
