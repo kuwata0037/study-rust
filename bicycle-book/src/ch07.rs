@@ -80,6 +80,34 @@ impl<T: Default> ToyVec<T> {
             Some(elem)
         }
     }
+
+    pub fn iter(&self) -> Iter<T> {
+        Iter {
+            elements: &self.elements,
+            len: self.len(),
+            pos: 0,
+        }
+    }
+}
+
+pub struct Iter<'a, T> {
+    elements: &'a Box<[T]>,
+    len: usize,
+    pos: usize,
+}
+
+impl<'a, T> Iterator for Iter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.pos >= self.len {
+            None
+        } else {
+            let res = Some(&self.elements[self.pos]);
+            self.pos += 1;
+            res
+        }
+    }
 }
 
 #[cfg(test)]
@@ -93,5 +121,16 @@ mod tests {
         v.push("Budgerigar".to_string());
         let e = v.get(1);
         assert_eq!(e, Some(&"Budgerigar".to_string()));
+    }
+
+    #[test]
+    fn test_vec03() {
+        let mut v = ToyVec::new();
+        v.push("Java Finch".to_string());
+        v.push("Budgerigar".to_string());
+
+        let mut iter = v.iter();
+        assert_eq!(iter.next(), Some(&"Java Finch".to_string()));
+        v.push("Canary".to_string());
     }
 }
