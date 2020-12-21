@@ -10,6 +10,7 @@ checksum = "cdb031dd78e28731d87d56cc8ffef4a8f36ca26c38fe2de700543e627f8a464a"
 name = "bicycle-book"
 version = "0.1.0"
 dependencies = [
+ "lazy_static",
  "num_cpus",
  "rand",
  "rand_pcg",

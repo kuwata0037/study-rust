@@ -1,9 +1,14 @@
 #[cfg(test)]
 mod tests {
+    use lazy_static::lazy_static;
     use std::cell::RefCell;
     use std::collections::HashSet;
     use std::error::Error;
     use std::sync::{Arc, RwLock};
+
+    fn stringify(x: impl ToString) -> String {
+        x.to_string()
+    }
 
     #[test]
     fn test_ref_cell() {
@@ -57,10 +62,6 @@ mod tests {
         let dogs: HashSet<_> = ["紫", "トイプードル"].iter().cloned().collect();
         let dogs = Arc::new(RwLock::new(dogs));
 
-        fn stringify(x: impl ToString) -> String {
-            x.to_string()
-        }
-
         {
             let ds = dogs.read().map_err(stringify)?;
             assert!(ds.contains("紫"));
@@ -81,6 +82,31 @@ mod tests {
 
         assert!(dogs.read().map_err(stringify)?.contains("ブル・テリア"));
         assert!(dogs.read().map_err(stringify)?.contains("コーギー"));
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_static_rwlock() -> Result<(), Box<dyn Error>> {
+        lazy_static! {
+            pub static ref DOGS: RwLock<HashSet<&'static str>> = {
+                let dogs = ["紫", "トイプードル"].iter().cloned().collect();
+                RwLock::new(dogs)
+            };
+        }
+
+        DOGS.write()?.insert("ブル・テリア");
+
+        std::thread::spawn(|| {
+            DOGS.write()
+                .map(|mut ds| ds.insert("コーギー"))
+                .map_err(stringify)
+        })
+        .join()
+        .expect("Thread error")?;
+
+        assert!(DOGS.read()?.contains("ブル・テリア"));
+        assert!(DOGS.read()?.contains("コーギー"));
 
         Ok(())
     }
