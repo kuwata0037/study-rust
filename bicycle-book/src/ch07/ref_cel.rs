@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use std::cell::RefCell;
+    use std::collections::HashSet;
 
     #[test]
     fn test_ref_cell() {
@@ -23,5 +24,29 @@ mod tests {
             assert!(b.s.try_borrow_mut().is_err());
         }
         assert!(b.s.try_borrow_mut().is_ok());
+    }
+
+    #[test]
+    fn test_tls_refcell() {
+        thread_local! {
+            static RABBITS: RefCell<HashSet<&'static str>> = {
+                let rb = ["ロップイヤー", "ダッチ"].iter().cloned().collect();
+                RefCell::new(rb)
+            }
+        };
+
+        RABBITS.with(|rb| {
+            assert!(rb.borrow().contains("ロップイヤー"));
+            rb.borrow_mut().insert("ネザーランドワーフ");
+        });
+
+        std::thread::spawn(|| RABBITS.with(|rb| rb.borrow_mut().insert("ドワーフホト")))
+            .join()
+            .expect("Thread error");
+
+        RABBITS.with(|rb| {
+            assert!(rb.borrow().contains("ネザーランドワーフ"));
+            assert!(!rb.borrow().contains("ドワーフホト"));
+        });
     }
 }
