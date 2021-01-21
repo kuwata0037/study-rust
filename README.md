@@ -10,7 +10,7 @@ Rust 言語およびライブラリの個人学習用リポジトリ．
 
 ### ライブラリ
 - [std-lib](std-lib)
-    - 標準ライブラリ
+    - [標準ライブラリ](https://doc.rust-lang.org/std/)
 
 - [crates](./crates)
     - [Crate](https://crates.io/)
