@@ -612,4 +612,47 @@ mod tests {
             ))
         );
     }
+
+    #[test]
+    fn test_parse_error_redundant() {
+        assert_eq!(
+            "(+ 1 3)".parse::<Ast>(),
+            Err(Error::Parser(ParseError::RedundantExpression(
+                Token::number(3, Loc(5, 6))
+            )))
+        );
+    }
+
+    #[test]
+    fn test_parse_error_unclosed_open_paren() {
+        assert_eq!(
+            "1 + (2 - 3".parse::<Ast>(),
+            Err(Error::Parser(ParseError::UnclosedOpenParen(Token::lparen(
+                Loc(4, 5)
+            ))))
+        );
+    }
+
+    #[test]
+    fn test_parse_error_not_expression() {
+        assert_eq!(
+            "1 + 2 - * 3".parse::<Ast>(),
+            Err(Error::Parser(ParseError::NotExpression(Token::asterisk(
+                Loc(8, 9)
+            ))))
+        );
+    }
+
+    #[test]
+    fn test_parse_error_eof() {
+        assert_eq!("1 +".parse::<Ast>(), Err(Error::Parser(ParseError::Eof)));
+    }
+
+    #[test]
+    fn test_parse_error_invalid_char() {
+        assert_eq!(
+            "aiueo".parse::<Ast>(),
+            Err(Error::Lexer(LexError::invalid_char('a', Loc(0, 1))))
+        );
+    }
 }
