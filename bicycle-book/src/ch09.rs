@@ -643,6 +643,60 @@ impl Interpreter {
     }
 }
 
+pub struct RpnCompiler;
+
+impl RpnCompiler {
+    pub fn new() -> Self {
+        RpnCompiler
+    }
+
+    pub fn compile(&mut self, expr: &Ast) -> String {
+        let mut buf = String::new();
+        self.compile_inner(expr, &mut buf);
+        buf
+    }
+
+    fn compile_inner(&mut self, expr: &Ast, buf: &mut String) {
+        use self::AstKind::*;
+        match expr.value {
+            Num(n) => buf.push_str(&n.to_string()),
+            UniOp { ref op, ref e } => {
+                self.compile_uni_op(op, buf);
+                self.compile_inner(e, buf);
+            }
+            BinOp {
+                ref op,
+                ref l,
+                ref r,
+            } => {
+                self.compile_inner(l, buf);
+                buf.push(' ');
+                self.compile_inner(r, buf);
+                buf.push(' ');
+                self.compile_bin_op(op, buf);
+            }
+        }
+    }
+
+    fn compile_uni_op(&mut self, op: &UniOp, buf: &mut String) {
+        use self::UniOpKind::*;
+        match op.value {
+            Plus => buf.push('+'),
+            Minus => buf.push('-'),
+        }
+    }
+
+    fn compile_bin_op(&mut self, op: &BinOp, buf: &mut String) {
+        use self::BinOpKind::*;
+        match op.value {
+            Add => buf.push('+'),
+            Sub => buf.push('-'),
+            Mult => buf.push('*'),
+            Div => buf.push('/'),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
