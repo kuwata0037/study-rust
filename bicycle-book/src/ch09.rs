@@ -3,6 +3,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::iter::Peekable;
 use std::str::FromStr;
+use thiserror::Error;
 
 /// 位置情報。 .0 から .1 までの区間を表す
 #[derive(Debug, Clone, Eq, PartialEq, Hash)]
@@ -269,19 +270,25 @@ impl BinOp {
     }
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Error, Debug, Clone, Eq, PartialEq, Hash)]
 pub enum ParseError {
     /// 予期しないトークンがきた
+    #[error("{}: {} is not expected", .0.loc, .0.value)]
     UnexpectedToken(Token),
     /// 式を期待していたのに式でないものがきた
+    #[error("{}: '{}' is not a start of expression", .0.loc, .0.value)]
     NotExpression(Token),
     /// 演算子を期待していたのに演算子でないものがきた
+    #[error("{}: '{}' is not an operator", .0.loc, .0.value)]
     NotOperator(Token),
     /// 括弧が閉じられていない
+    #[error("{}: '{}' is not closed", .0.loc, .0.value)]
     UnclosedOpenParen(Token),
     /// 式の解析が終わったのにまだトークンが残っている
+    #[error("{}: expression after '{}' is redundant", .0.loc, .0.value)]
     RedundantExpression(Token),
     /// パース途中で入力が終わった
+    #[error("End of file")]
     Eof,
 }
 
@@ -424,22 +431,12 @@ where
     Ok(e)
 }
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+#[derive(Error, Debug, Clone, Eq, PartialEq, Hash)]
 pub enum Error {
-    Lexer(LexError),
-    Parser(ParseError),
-}
-
-impl From<LexError> for Error {
-    fn from(e: LexError) -> Self {
-        Error::Lexer(e)
-    }
-}
-
-impl From<ParseError> for Error {
-    fn from(e: ParseError) -> Self {
-        Error::Parser(e)
-    }
+    #[error("lexer error")]
+    Lexer(#[from] LexError),
+    #[error("parser error")]
+    Parser(#[from] ParseError),
 }
 
 impl FromStr for Ast {
@@ -484,47 +481,31 @@ impl fmt::Display for LexError {
     }
 }
 
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        use self::ParseError::*;
-        match self {
-            UnexpectedToken(tok) => write!(f, "{}: {} is not expected", tok.loc, tok.value),
-            NotExpression(tok) => write!(
-                f,
-                "{}: '{}' is not a start of expression",
-                tok.loc, tok.value
-            ),
-            NotOperator(tok) => write!(f, "{}: '{}' is not an operator", tok.loc, tok.value),
-            UnclosedOpenParen(tok) => write!(f, "{}: '{}' is not closed", tok.loc, tok.value),
-            RedundantExpression(tok) => write!(
-                f,
-                "{}: expression after '{}' is redundant",
-                tok.loc, tok.value
-            ),
-            Eof => write!(f, "End of file"),
-        }
-    }
-}
-
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "parser error")
-    }
-}
+// impl fmt::Display for ParseError {
+//     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+//         use self::ParseError::*;
+//         match self {
+//             UnexpectedToken(tok) => write!(f, "{}: {} is not expected", tok.loc, tok.value),
+//             NotExpression(tok) => write!(
+//                 f,
+//                 "{}: '{}' is not a start of expression",
+//                 tok.loc, tok.value
+//             ),
+//             NotOperator(tok) => write!(f, "{}: '{}' is not an operator", tok.loc, tok.value),
+//             UnclosedOpenParen(tok) => write!(f, "{}: '{}' is not closed", tok.loc, tok.value),
+//             RedundantExpression(tok) => write!(
+//                 f,
+//                 "{}: expression after '{}' is redundant",
+//                 tok.loc, tok.value
+//             ),
+//             Eof => write!(f, "End of file"),
+//         }
+//     }
+// }
 
 impl StdError for LexError {}
 
-impl StdError for ParseError {}
-
-impl StdError for Error {
-    fn source(&self) -> Option<&(dyn StdError + 'static)> {
-        use self::Error::*;
-        match self {
-            Lexer(lex) => Some(lex),
-            Parser(parse) => Some(parse),
-        }
-    }
-}
+// impl StdError for ParseError {}
 
 fn print_annotation(input: &str, loc: Loc) {
     eprintln!("{}", input);
