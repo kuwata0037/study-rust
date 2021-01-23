@@ -244,7 +244,7 @@ pub enum BinOpKind {
     /// 減算
     Sub,
     /// 乗算
-    Mult,
+    Multi,
     /// 除算
     Div,
 }
@@ -261,7 +261,7 @@ impl BinOp {
     }
 
     fn multi(loc: Loc) -> Self {
-        Self::new(BinOpKind::Mult, loc)
+        Self::new(BinOpKind::Multi, loc)
     }
 
     fn div(loc: Loc) -> Self {
@@ -526,7 +526,7 @@ impl StdError for Error {
     }
 }
 
-fn print_annot(input: &str, loc: Loc) {
+fn print_annotation(input: &str, loc: Loc) {
     eprintln!("{}", input);
     eprintln!("{}{}", " ".repeat(loc.0), "^".repeat(loc.1 - loc.0));
 }
@@ -551,15 +551,15 @@ impl Error {
             }
         };
         eprintln!("{}", e);
-        print_annot(input, loc);
+        print_annotation(input, loc);
     }
 }
 
 /// 評価器を表すデータ型
 pub struct Interpreter;
 
-impl Interpreter {
-    pub fn new() -> Self {
+impl Default for Interpreter {
+    fn default() -> Self {
         Interpreter
     }
 }
@@ -592,7 +592,7 @@ impl StdError for InterpreterError {
 impl InterpreterError {
     pub fn show_diagnostic(&self, input: &str) {
         eprintln!("{}", self);
-        print_annot(input, self.loc.clone());
+        print_annotation(input, self.loc.clone());
     }
 }
 
@@ -631,7 +631,7 @@ impl Interpreter {
         match op.value {
             Add => Ok(l + r),
             Sub => Ok(l - r),
-            Mult => Ok(l * r),
+            Multi => Ok(l * r),
             Div => {
                 if r == 0 {
                     Err(InterpreterErrorKind::DivisionByZero)
@@ -645,11 +645,13 @@ impl Interpreter {
 
 pub struct RpnCompiler;
 
-impl RpnCompiler {
-    pub fn new() -> Self {
+impl Default for RpnCompiler {
+    fn default() -> Self {
         RpnCompiler
     }
+}
 
+impl RpnCompiler {
     pub fn compile(&mut self, expr: &Ast) -> String {
         let mut buf = String::new();
         self.compile_inner(expr, &mut buf);
@@ -691,7 +693,7 @@ impl RpnCompiler {
         match op.value {
             Add => buf.push('+'),
             Sub => buf.push('-'),
-            Mult => buf.push('*'),
+            Multi => buf.push('*'),
             Div => buf.push('/'),
         }
     }
@@ -701,26 +703,8 @@ impl RpnCompiler {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_lexer() {
-        assert_eq!(
-            lex("1 + 2 * 3 - - 10"),
-            Ok(vec![
-                Token::number(1, Loc(0, 1)),
-                Token::plus(Loc(2, 3)),
-                Token::number(2, Loc(4, 5)),
-                Token::asterisk(Loc(6, 7)),
-                Token::number(3, Loc(8, 9)),
-                Token::minus(Loc(10, 11)),
-                Token::minus(Loc(12, 13)),
-                Token::number(10, Loc(14, 16))
-            ])
-        )
-    }
-
-    #[test]
-    fn test_parser() {
-        let ast = parse(vec![
+    fn create_tokens() -> Vec<Token> {
+        vec![
             Token::number(1, Loc(0, 1)),
             Token::plus(Loc(2, 3)),
             Token::number(2, Loc(4, 5)),
@@ -729,7 +713,17 @@ mod tests {
             Token::minus(Loc(10, 11)),
             Token::minus(Loc(12, 13)),
             Token::number(10, Loc(14, 16)),
-        ]);
+        ]
+    }
+
+    #[test]
+    fn test_lexer() {
+        assert_eq!(lex("1 + 2 * 3 - - 10"), Ok(create_tokens()));
+    }
+
+    #[test]
+    fn test_parser() {
+        let ast = parse(create_tokens());
         assert_eq!(
             ast,
             Ok(Ast::bin_op(
@@ -738,7 +732,7 @@ mod tests {
                     BinOp::add(Loc(2, 3)),
                     Ast::num(1, Loc(0, 1)),
                     Ast::bin_op(
-                        BinOp::new(BinOpKind::Mult, Loc(6, 7)),
+                        BinOp::new(BinOpKind::Multi, Loc(6, 7)),
                         Ast::num(2, Loc(4, 5)),
                         Ast::num(3, Loc(8, 9)),
                         Loc(4, 9)
