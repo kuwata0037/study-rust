@@ -79,7 +79,7 @@ pub enum LexErrorKind {
     Eof,
 }
 
-pub type LexError = Annotation<LexErrorKind>;
+type LexError = Annotation<LexErrorKind>;
 
 impl LexError {
     fn invalid_char(c: char, loc: Loc) -> Self {
