@@ -30,6 +30,22 @@ impl Default for CountOption {
 /// * [`CountOption::Word`]: 正規表現 \w+ にマッチする単語ごと
 /// * [`CountOption::Line`]: \n または \r\n で区切られた 1 行ごと
 ///
+/// # Examples
+///
+/// 入力中の単語の出現頻度を数える例
+///
+/// ```
+/// use std::io::Cursor;
+/// use bicycle_book::ch10::{count, CountOption};
+///
+/// let mut input = Cursor::new("aa bb cc bb");
+/// let freq = count(input, CountOption::Word);
+///
+/// assert_eq!(freq["aa"], 1);
+/// assert_eq!(freq["bb"], 2);
+/// assert_eq!(freq["cc"], 1);
+/// ```
+///
 /// # Panics
 ///
 /// 入力が UTF-8 でフォーマットされていない場合にパニックする
@@ -57,4 +73,23 @@ pub fn count(input: impl BufRead, option: CountOption) -> HashMap<String, usize>
     }
 
     freqs
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Cursor;
+
+    macro_rules! assert_map {
+        ($expr: expr, {$($key: expr => $value: expr),*}) => {
+            $(assert_eq!($expr[$key], $value));*
+        };
+    }
+
+    #[test]
+    fn word_count_works() {
+        let freqs = count(Cursor::new("aa bb cc bb"), CountOption::Word);
+
+        assert_map!(freqs, {"aa" => 1, "bb" => 2, "cc" => 1});
+    }
 }

@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/std-lib/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/crates/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/bicycle-book/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/bicycle-book/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
