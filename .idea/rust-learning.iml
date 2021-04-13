@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/crates/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/bicycle-book/examples" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/bicycle-book/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/web-crawler/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

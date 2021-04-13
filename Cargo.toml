@@ -2,5 +2,6 @@
 members = [
     "bicycle-book",
     "crates",
-    "std-lib"
+    "std-lib",
+    "web-crawler",
 ]
