@@ -1,26 +1,15 @@
-use select::document::Document;
-use select::predicate::Name;
-use url::ParseError as UrlParseError;
+use reqwest::blocking::ClientBuilder;
 use url::Url;
+use web_crawler::LinkExtractor;
 
 fn main() -> eyre::Result<()> {
-    let response = reqwest::blocking::get("https://www.rust-lang.org")?;
-    let base_url = response.url().clone();
-    let body = response.text()?;
-    let doc = Document::from(body.as_str());
-    for href in doc.find(Name("a")).filter_map(|a| a.attr("href")) {
-        match Url::parse(href) {
-            Ok(url) => {
-                println!("{}", url);
-            }
-            Err(UrlParseError::RelativeUrlWithoutBase) => {
-                let url = base_url.join(href)?;
-                println!("{}", url);
-            }
-            Err(e) => {
-                println!("{}", e);
-            }
-        }
+    let url = Url::parse("https://www.rust-lang.org")?;
+    let client = ClientBuilder::new().build()?;
+    let extractor = LinkExtractor::from_client(client);
+
+    let links = extractor.get_links(url)?;
+    for link in &links {
+        println!("{}", link);
     }
 
     Ok(())
