@@ -3,6 +3,8 @@ use url::Url;
 use web_crawler::LinkExtractor;
 
 fn main() -> eyre::Result<()> {
+    env_logger::init();
+
     let arg = std::env::args()
         .nth(1)
         .unwrap_or_else(|| "https://www.rust-lang.org".to_string());
