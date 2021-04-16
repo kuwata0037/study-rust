@@ -77,11 +77,10 @@ mod tests {
         }
     }
 
-    #[rstest(input, expected,
-        case(AdjVec(vec![vec![1, 2], vec![0, 3], vec![3], vec![2, 0]]), vec![0, 1, 2, 3]),
-        case(AdjVec(vec![vec![1], vec![0, 2, 4], vec![0, 3], vec![0], vec![0]]), vec![0, 1, 2, 4, 3])
-    )]
-    fn test_bfs(input: AdjVec, expected: Vec<usize>) {
+    #[rstest]
+    #[case(AdjVec(vec![vec![1, 2], vec![0, 3], vec![3], vec![2, 0]]), vec![0, 1, 2, 3])]
+    #[case(AdjVec(vec![vec![1], vec![0, 2, 4], vec![0, 3], vec![0], vec![0]]), vec![0, 1, 2, 4, 3])]
+    fn test_bfs(#[case] input: AdjVec, #[case] expected: Vec<usize>) {
         let crawler = Crawler::new(&input, 0);
         let nodes = crawler.collect::<Vec<usize>>();
 
