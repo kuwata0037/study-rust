@@ -42,3 +42,36 @@ impl RpnCalculator {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::*;
+
+    #[rstest]
+    #[case("5", 5)]
+    #[case("50", 50)]
+    #[case("-50", -50)]
+    fn test_one_operand(#[case] input: &str, #[case] expected: i32) {
+        let calc = RpnCalculator::new(false);
+        assert_eq!(calc.eval(input), expected);
+    }
+
+    #[rstest]
+    #[case("2 3 +", 5)]
+    #[case("2 3 *", 6)]
+    #[case("2 3 -", -1)]
+    #[case("2 3 /", 0)]
+    #[case("2 3 %", 2)]
+    fn test_two_operand(#[case] input: &str, #[case] expected: i32) {
+        let calc = RpnCalculator::new(false);
+        assert_eq!(calc.eval(input), expected);
+    }
+
+    #[rstest]
+    #[should_panic]
+    fn test_panic() {
+        let calc = RpnCalculator::new(false);
+        calc.eval("1 1 ^");
+    }
+}
