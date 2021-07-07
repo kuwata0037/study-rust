@@ -1,3 +1,5 @@
+use anyhow::Result;
+
 use std::{
     fs::File,
     io::{stdin, BufRead, BufReader},
@@ -23,26 +25,30 @@ struct Opts {
     formula_file: Option<String>,
 }
 
-fn main() {
+fn main() -> Result<()> {
     let opts = Opts::parse();
 
     if let Some(path) = opts.formula_file {
-        let f = File::open(path).unwrap();
+        let f = File::open(path)?;
         let reader = BufReader::new(f);
-        run(reader, opts.verbose);
+        run(reader, opts.verbose)
     } else {
         let stdin = stdin();
         let reader = stdin.lock();
-        run(reader, opts.verbose);
+        run(reader, opts.verbose)
     }
 }
 
-fn run(reader: impl BufRead, verbose: bool) {
+fn run(reader: impl BufRead, verbose: bool) -> Result<()> {
     let calc = RpnCalculator::new(verbose);
 
     for line in reader.lines() {
-        let line = line.unwrap();
-        let answer = calc.eval(&line);
-        println!("{}", answer);
+        let line = line?;
+        match calc.eval(&line) {
+            Ok(answer) => println!("{}", answer),
+            Err(e) => eprintln!("{:?}", e),
+        }
     }
+
+    Ok(())
 }
