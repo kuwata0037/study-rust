@@ -8,14 +8,14 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 enum MyError {
-    #[error("Faild to render HTMl")]
+    #[error("Failed to render HTMl")]
     AskamaError(#[from] askama::Error),
 
     #[error("Failed to get connection")]
     ConnectionPoolError(#[from] r2d2::Error),
 
     #[error("Failed SQL execution")]
-    SQLiteFrror(#[from] rusqlite::Error),
+    SQLiteError(#[from] rusqlite::Error),
 }
 
 impl ResponseError for MyError {}
