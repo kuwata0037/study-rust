@@ -8,7 +8,6 @@ mod tests {
 
     #[test]
     fn test_dotenv_var() {
-        assert!(std::env::var("URL").is_err());
         assert_eq!(dotenv::var("URL").unwrap(), "localhost"); // 直接キーを指定して参照することもできる
     }
 }
