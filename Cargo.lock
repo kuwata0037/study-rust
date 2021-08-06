@@ -997,6 +997,7 @@ dependencies = [
  "config",
  "criterion",
  "dotenv",
+ "rand 0.8.4",
  "serde 1.0.127",
 ]
 

@@ -6,3 +6,6 @@ members = [
     "std-lib",
     "web-crawler",
 ]
+
+[profile.release]
+debug = true

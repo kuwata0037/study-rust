@@ -10,6 +10,7 @@ edition = "2018"
 dotenv = "0.15.0"
 config = "0.11.0"
 serde = { version = "1.0.127", features = ["derive"] }
+rand = "0.8.4"
 
 [dev-dependencies]
 criterion = "0.3.4"
