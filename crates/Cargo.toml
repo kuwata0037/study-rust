@@ -15,5 +15,5 @@ serde = { version = "1.0.127", features = ["derive"] }
 criterion = "0.3.4"
 
 [[bench]]
-name = "my_benchmark"
+name = "criterion"
 harness = false
