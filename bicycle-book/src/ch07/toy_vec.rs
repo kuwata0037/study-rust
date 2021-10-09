@@ -4,11 +4,13 @@ pub struct ToyVec<T> {
     len: usize,
 }
 
-impl<T: Default> ToyVec<T> {
-    pub fn new() -> Self {
+impl<T: Default> Default for ToyVec<T> {
+    fn default() -> Self {
         Self::with_capacity(0)
     }
+}
 
+impl<T: Default> ToyVec<T> {
     pub fn with_capacity(size: usize) -> Self {
         Self {
             elements: Self::allocate_in_heap(size),
@@ -29,6 +31,10 @@ impl<T: Default> ToyVec<T> {
 
     pub fn capacity(&self) -> usize {
         self.elements.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.len == 0
     }
 
     pub fn push(&mut self, element: T) {
@@ -72,11 +78,11 @@ impl<T: Default> ToyVec<T> {
 
     // 可変の借用(&mut)経由では値の所有権を一方的に奪うことはできないが、所有権を交換することなら可能
     pub fn pop(&mut self) -> Option<T> {
-        if self.len() == 0 {
+        if self.is_empty() {
             None
         } else {
             self.len -= 1;
-            let elem = std::mem::replace(&mut self.elements[self.len()], Default::default());
+            let elem = std::mem::take(&mut self.elements[self.len()]);
             Some(elem)
         }
     }
@@ -91,7 +97,7 @@ impl<T: Default> ToyVec<T> {
 }
 
 pub struct Iter<'a, T> {
-    elements: &'a Box<[T]>,
+    elements: &'a [T],
     len: usize,
     pos: usize,
 }
@@ -116,7 +122,7 @@ mod tests {
 
     #[test]
     fn toy_vec01() {
-        let mut v = ToyVec::new();
+        let mut v = ToyVec::default();
         v.push("Java Finch".to_string());
         v.push("Budgerigar".to_string());
         let e = v.get(1);
@@ -125,7 +131,7 @@ mod tests {
 
     #[test]
     fn test_vec03() {
-        let mut v = ToyVec::new();
+        let mut v = ToyVec::default();
         v.push("Java Finch".to_string());
         v.push("Budgerigar".to_string());
 

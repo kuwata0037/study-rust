@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    #[derive(Debug, Clone)]
     struct Point {
         x: i32,
         y: i32,
@@ -56,7 +55,7 @@ mod tests {
     #[test]
     fn test_destructuring_struct() {
         let p = Point::new(0, 7);
-        let Point { x, y } = p.clone();
+        let Point { x, y } = p;
         assert_eq!(x, 0);
         assert_eq!(y, 7);
 
@@ -103,7 +102,7 @@ mod tests {
             Message::Hello {
                 id: id_variable @ 3..=7,
             } => format!("Found an id in range: {}", id_variable),
-            Message::Hello { id: 10..=12 } => format!("Found an id in another range"),
+            Message::Hello { id: 10..=12 } => "Found an id in another range".to_string(),
             Message::Hello { id } => format!("Found some other id: {}", id),
         };
         assert_eq!(result, "Found an id in range: 5");

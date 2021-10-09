@@ -14,7 +14,7 @@ fn main() {
     } else {
         eprintln!(
             "Usage {} <number of elements in bits>",
-            env::args().nth(0).unwrap()
+            env::args().next().unwrap()
         );
         std::process::exit(1);
     }

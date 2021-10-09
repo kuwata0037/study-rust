@@ -7,6 +7,7 @@ use serde::Deserialize;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
+#[allow(clippy::enum_variant_names)]
 enum MyError {
     #[error("Failed to render HTMl")]
     AskamaError(#[from] askama::Error),
