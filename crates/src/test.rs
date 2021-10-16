@@ -1,1 +1,1 @@
-pub mod speculate;
+mod speculate;
