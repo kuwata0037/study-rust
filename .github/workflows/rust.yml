@@ -16,13 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: Swatinem/rust-cache@v1
-
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           override: true
+
+      - uses: Swatinem/rust-cache@v1
 
       - name: Run cargo build
         run: cargo build
@@ -52,14 +52,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: Swatinem/rust-cache@v1
-
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: stable
           components: clippy
           override: true
+
+      - uses: Swatinem/rust-cache@v1
 
       - uses: actions-rs/clippy-check@v1
         with:
