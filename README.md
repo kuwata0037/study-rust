@@ -1,5 +1,7 @@
 # Study Rust
 
+[![Rust](https://github.com/kuwata0037/study-rust/actions/workflows/rust.yml/badge.svg)](https://github.com/kuwata0037/study-rust/actions/workflows/rust.yml)
+
 Rust 言語およびライブラリの個人学習用リポジトリ．
 
 ## Workspace
