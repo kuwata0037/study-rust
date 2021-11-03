@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+    #[allow(clippy::vec_init_then_push)]
     #[test]
     fn test_vec() {
         macro_rules! toy_vec {

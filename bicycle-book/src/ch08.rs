@@ -88,8 +88,8 @@ mod tests {
         let point = (1.0, 1.0);
 
         let cartesian = point.into_cartesian();
-        assert_eq!(cartesian.x, 1.0);
-        assert_eq!(cartesian.y, 1.0);
+        approx::assert_abs_diff_eq!(cartesian.x, 1.0);
+        approx::assert_abs_diff_eq!(cartesian.y, 1.0);
 
         let polar = PolarCoord::from_cartesian(cartesian);
         assert_eq!(format!("{:.8}", polar.r), "1.41421356");
@@ -99,7 +99,4 @@ mod tests {
 
         assert_eq!(CartesianCoord::DIMENSION, 2);
     }
-
-    #[test]
-    fn foo() {}
 }
