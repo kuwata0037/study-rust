@@ -2,4 +2,4 @@
 
 mod config;
 mod dotenv;
-mod test;
+mod speculate;
