@@ -1,35 +1,34 @@
-struct IntCloseRange {
-    lower: i32,
-    upper: i32,
-}
-
-impl IntCloseRange {
-    fn new(lower: i32, upper: i32) -> Self {
-        Self { lower, upper }
-    }
-
-    fn lower(&self) -> i32 {
-        self.lower
-    }
-
-    fn upper(&self) -> i32 {
-        self.upper
-    }
-
-    fn notation(&self) -> String {
-        format!("[{}, {}]", self.lower, self.upper)
-    }
-
-    fn includes(&self, arg: i32) -> bool {
-        self.lower <= arg && arg <= self.upper
-    }
-}
-
 #[cfg(test)]
 mod tests {
-    use super::*;
     use rstest::*;
     use speculate::speculate;
+
+    struct IntCloseRange {
+        lower: i32,
+        upper: i32,
+    }
+
+    impl IntCloseRange {
+        fn new(lower: i32, upper: i32) -> Self {
+            Self { lower, upper }
+        }
+
+        fn lower(&self) -> i32 {
+            self.lower
+        }
+
+        fn upper(&self) -> i32 {
+            self.upper
+        }
+
+        fn notation(&self) -> String {
+            format!("[{}, {}]", self.lower, self.upper)
+        }
+
+        fn includes(&self, arg: i32) -> bool {
+            self.lower <= arg && arg <= self.upper
+        }
+    }
 
     speculate! {
         describe "IntClosedRangeは整数閉区間を表す" {
