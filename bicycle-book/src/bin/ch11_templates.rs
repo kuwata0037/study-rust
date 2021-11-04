@@ -29,7 +29,7 @@ fn hello_template(
 fn main() {
     server::new(|| {
         let app = AppSate {
-            template: compile_templates!("bicycle-book/examples/templates/*"),
+            template: compile_templates!("bicycle-book/src/bin/templates/*"),
         };
         App::with_state(app).route("/{name}", http::Method::GET, hello_template)
     })
