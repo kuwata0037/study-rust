@@ -96,7 +96,7 @@ async fn main() -> Result<(), actix_web::Error> {
     let pool = Pool::new(manager).expect("Failed to initialize the connection pool.");
     let conn = pool
         .get()
-        .expect("Failed to get the conection from the pool.");
+        .expect("Failed to get the connection from the pool.");
     conn.execute(
         "CREATE TABLE IF NOT EXISTS todo (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,

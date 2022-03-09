@@ -14,7 +14,7 @@ use gear_book::ch04::RpnCalculator;
     name = "My RPN program",
     version = clap::crate_version!(),
     author = clap::crate_authors!(),
-    about = "Super awsome sample RPN calculator"
+    about = "Super awesome sample RPN calculator"
 )]
 struct Opts {
     /// Sets the level of verbosity
