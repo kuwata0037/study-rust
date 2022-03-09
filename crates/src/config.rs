@@ -12,10 +12,11 @@ mod tests {
     fn test_config() -> Result<(), config::ConfigError> {
         dotenv().ok();
 
-        let mut config = config::Config::default();
-        config.merge(config::Environment::new())?;
+        let config = config::Config::builder()
+            .add_source(config::Environment::default())
+            .build()?;
+        let config = config.try_deserialize::<Config>()?;
 
-        let config = config.try_into::<Config>()?;
         assert_eq!(config.url, "localhost");
 
         Ok(())
