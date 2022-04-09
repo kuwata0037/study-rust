@@ -1,9 +1,7 @@
-#[cfg(test)]
-mod tests {
-    #[allow(clippy::vec_init_then_push)]
-    #[test]
-    fn test_vec() {
-        macro_rules! toy_vec {
+#[allow(clippy::vec_init_then_push)]
+#[test]
+fn test_vec() {
+    macro_rules! toy_vec {
             ($($x:expr),* ) => {
                 {
                     let mut temp_vec = Vec::new();
@@ -15,7 +13,6 @@ mod tests {
             };
         }
 
-        let v = toy_vec![1, 2, 3];
-        assert_eq!(v, vec![1, 2, 3]);
-    }
+    let v = toy_vec![1, 2, 3];
+    assert_eq!(v, vec![1, 2, 3]);
 }
