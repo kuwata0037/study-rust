@@ -30,7 +30,7 @@ jobs:
       - name: Run cargo test
         run: cargo test
 
-  coverage:
+  coverage_by_llvm_cov:
     runs-on: ubuntu-latest
 
     steps:
@@ -54,6 +54,34 @@ jobs:
         with:
           files: lcov.info
           fail_ci_if_error: true
+
+  coverage_by_grcov:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: llvm-tools-preview
+          override: true
+
+      - uses: Swatinem/rust-cache@v1
+
+      - name: Install grcov
+        run: |
+          curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
+          ./grcov --version
+
+      - name: Generate coverage
+        run: |
+          cargo test
+          ./grcov . -s . --binary-path ./target/debug --ignore-not-existing -t lcov -o ./cov/lcov.info
+        env:
+          RUSTFLAGS: -C instrument-coverage
+          LLVM_PROFILE_FILE: "./cov/study-rust-%p-%m.profraw"
 
   fmt:
     runs-on: ubuntu-latest
