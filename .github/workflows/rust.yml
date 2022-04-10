@@ -30,31 +30,6 @@ jobs:
       - name: Run cargo test
         run: cargo test
 
-  coverage_by_llvm_cov:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          components: llvm-tools-preview
-          override: true
-
-      - uses: Swatinem/rust-cache@v1
-
-      - uses: taiki-e/install-action@cargo-llvm-cov
-
-      - name: Generate coverage
-        run: cargo llvm-cov --lcov --output-path lcov.info
-
-      - uses: codecov/codecov-action@v2
-        with:
-          files: lcov.info
-          fail_ci_if_error: true
-
   coverage_by_grcov:
     runs-on: ubuntu-latest
 
@@ -78,10 +53,41 @@ jobs:
       - name: Generate coverage
         run: |
           cargo test
-          ./grcov . -s . --binary-path ./target/debug --ignore-not-existing -t lcov -o ./cov/lcov.info
+          ./grcov . -s . --binary-path ./target/debug --ignore-not-existing -t lcov -o ./coverage/lcov.info
+          ls -l ./coverage/lcov.info
         env:
           RUSTFLAGS: -C instrument-coverage
-          LLVM_PROFILE_FILE: "./cov/study-rust-%p-%m.profraw"
+          LLVM_PROFILE_FILE: "./coverage/study-rust-%p-%m.profraw"
+
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: true
+
+  coverage_by_llvm_cov:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: llvm-tools-preview
+          override: true
+
+      - uses: Swatinem/rust-cache@v1
+
+      - uses: taiki-e/install-action@cargo-llvm-cov
+
+      - name: Generate coverage
+        run: cargo llvm-cov --lcov --output-path lcov.info
+
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: lcov.info
 
   fmt:
     runs-on: ubuntu-latest
