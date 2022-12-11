@@ -72,7 +72,7 @@ async fn add_todo(
     db: web::Data<Pool<SqliteConnectionManager>>,
 ) -> Result<HttpResponse, MyError> {
     let conn = db.get()?;
-    conn.execute("INSERT INTO todo (text) VALUES (?)", &[&params.text])?;
+    conn.execute("INSERT INTO todo (text) VALUES (?)", [&params.text])?;
     Ok(HttpResponse::SeeOther()
         .header(header::LOCATION, "/")
         .finish())
@@ -84,7 +84,7 @@ async fn delete_todo(
     db: web::Data<Pool<SqliteConnectionManager>>,
 ) -> Result<HttpResponse, MyError> {
     let conn = db.get()?;
-    conn.execute("DELETE FROM todo WHERE id = ?", &[&params.id])?;
+    conn.execute("DELETE FROM todo WHERE id = ?", [&params.id])?;
     Ok(HttpResponse::SeeOther()
         .header(header::LOCATION, "/")
         .finish())
