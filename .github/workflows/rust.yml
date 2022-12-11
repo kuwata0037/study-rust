@@ -89,7 +89,7 @@ jobs:
         with:
           components: rustfmt
 
-      - name: Check with rustfmt
+      - name: Check format with rustfmt
         run: cargo fmt --all -- --check
 
   lint:
@@ -105,7 +105,5 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-      - uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --all-targets --all-features -- --D warnings
+      - name: Check lint with clippy
+        run: cargo clippy --all-targets --all-features -- --D warnings
