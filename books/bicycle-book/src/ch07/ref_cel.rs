@@ -23,7 +23,7 @@ mod tests {
         rb.s.borrow_mut().push('a');
         {
             let rbs = b.s.borrow();
-            assert_eq!(&*rbs, "alexa");
+            assert_eq!(rbs.as_str(), "alexa");
 
             // b.s.borrow_mut();
             // → thread 'ch07::ref_cel::tests::test_ref_cell' panicked at 'already borrowed: BorrowMutError'

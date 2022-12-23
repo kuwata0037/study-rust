@@ -1,11 +1,5 @@
 [workspace]
 members = [
-    "bicycle-book",
-    "crates",
-    "gear-book",
-    "std-lib",
-    "web-crawler",
+    "books/*",
+    "crates/*",
 ]
-
-[profile.release]
-debug = true
