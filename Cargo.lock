@@ -649,7 +649,7 @@ dependencies = [
  "approx",
  "lazy_static",
  "num_cpus",
- "rand 0.7.3",
+ "rand 0.8.4",
  "rand_pcg 0.2.1",
  "rayon",
  "regex",
