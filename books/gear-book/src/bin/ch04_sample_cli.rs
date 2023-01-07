@@ -6,10 +6,10 @@ use std::{
     path::PathBuf,
 };
 
-use clap::Clap;
+use clap::Parser;
 use gear_book::ch04::RpnCalculator;
 
-#[derive(Clap, Debug)]
+#[derive(Parser, Debug)]
 #[clap(
     name = "My RPN program",
     version = clap::crate_version!(),
