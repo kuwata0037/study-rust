@@ -1152,7 +1152,6 @@ dependencies = [
  "config",
  "criterion",
  "dotenv",
- "rand",
  "rstest",
  "serde",
  "speculate",
