@@ -10,7 +10,7 @@ rust-version = "1.56.1"
 [dependencies]
 clap = { version = "4.1.4", features = ["derive", "cargo"] }
 thiserror = "1.0.38"
-anyhow = "1.0.68"
+anyhow = "1.0.69"
 
 [dev-dependencies]
 rstest = "0.16.0"
