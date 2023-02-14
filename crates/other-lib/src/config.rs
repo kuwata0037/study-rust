@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use dotenv::dotenv;
+    use dotenvy::dotenv;
     use serde::Deserialize;
 
     #[derive(Debug, Deserialize)]

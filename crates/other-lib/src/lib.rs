@@ -1,3 +1,3 @@
 mod config;
-mod dotenv;
+mod dotenvy;
 mod speculate;
