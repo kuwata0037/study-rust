@@ -1,5 +1,5 @@
 [package]
-name = "thir-party-library"
+name = "third-party-library"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
