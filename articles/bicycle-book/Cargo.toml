@@ -7,13 +7,13 @@ edition.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+lazy_static = "1.4.0"
+num_cpus = "1.15.0"
 rand = "0.8.5"
 rand_pcg = "0.3.1"
 rayon = "1.6.1"
-num_cpus = "1.15.0"
-lazy_static = "1.4.0"
-thiserror = "1.0.38"
 regex = "1.7.1"
+thiserror = "1.0.38"
 
 [dev-dependencies]
 approx = "0.5.1"
