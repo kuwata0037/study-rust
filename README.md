@@ -6,5 +6,5 @@
 
 Rustの言語機能およびライブラリの個人学習用のリポジトリ。
 
-- [books](./books/README.md)
+- [articles](./articles/README.md)
 - [crates](./crates/README.md)
