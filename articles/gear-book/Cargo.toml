@@ -1,9 +1,8 @@
 [package]
 name = "gear-book"
-version = "0.1.0"
-authors = ["kuwata0037 <kuwata0037@gmail.com>"]
-edition = "2021"
-rust-version = "1.56.1"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
