@@ -1,5 +1,5 @@
 [package]
-name = "std-lib"
+name = "standard-library"
 version = "0.1.0"
 authors = ["kuwata0037 <kuwata0037@gmail.com>"]
 edition = "2021"

@@ -1,5 +1,5 @@
 [package]
-name = "other-lib"
+name = "thir-party-library"
 version = "0.1.0"
 authors = ["kuwata0037 <kuwata0037@gmail.com>"]
 edition = "2021"

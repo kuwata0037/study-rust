@@ -1152,18 +1152,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b7820b9daea5457c9f21c69448905d723fbd21136ccf521748f23fd49e723ee"
 
 [[package]]
-name = "other-lib"
-version = "0.1.0"
-dependencies = [
- "config",
- "criterion",
- "dotenvy",
- "rstest",
- "serde",
- "speculate",
-]
-
-[[package]]
 name = "parking_lot"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1770,7 +1758,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "std-lib"
+name = "standard-library"
 version = "0.1.0"
 
 [[package]]
@@ -1905,6 +1893,18 @@ name = "textwrap"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "222a222a5bfe1bba4a77b45ec488a741b3cb8872e5e499451fd7d0129c9c7c3d"
+
+[[package]]
+name = "thir-party-library"
+version = "0.1.0"
+dependencies = [
+ "config",
+ "criterion",
+ "dotenvy",
+ "rstest",
+ "serde",
+ "speculate",
+]
 
 [[package]]
 name = "thiserror"
