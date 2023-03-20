@@ -10,7 +10,7 @@ edition.workspace = true
 anyhow = { version = "1.0.69", features = ["backtrace"] }
 config = "0.13.3"
 dotenvy = "0.15.6"
-serde = { version = "1.0.155", features = ["derive"] }
+serde = { version = "1.0.157", features = ["derive"] }
 
 [dev-dependencies]
 criterion = "0.4.0"
