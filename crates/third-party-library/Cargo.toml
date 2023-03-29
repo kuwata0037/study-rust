@@ -9,7 +9,7 @@ edition.workspace = true
 [dependencies]
 anyhow = { version = "1.0.70", features = ["backtrace"] }
 config = "0.13.3"
-dotenvy = "0.15.6"
+dotenvy = "0.15.7"
 serde = { version = "1.0.158", features = ["derive"] }
 
 [dev-dependencies]
