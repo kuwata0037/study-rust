@@ -12,7 +12,7 @@ anyhow = { version = "1.0.70", features = ["backtrace"] }
 config = "0.13.3"
 dotenvy = "0.15.7"
 phonenumber = "0.3.2"
-serde = { version = "1.0.158", features = ["derive"] }
+serde = { version = "1.0.160", features = ["derive"] }
 validator = { version = "0.16.0", features = ["derive", "phone"] }
 
 [dev-dependencies]
