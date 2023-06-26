@@ -13,7 +13,7 @@ config = "0.13.3"
 dotenvy = "0.15.7"
 phonenumber = "0.3.2"
 serde = { version = "1.0.164", features = ["derive"] }
-validator = { version = "0.16.0", features = ["derive", "phone"] }
+validator = { version = "0.16.1", features = ["derive", "phone"] }
 
 [dev-dependencies]
 criterion = "0.5.1"
