@@ -307,9 +307,9 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.3.4"
+version = "4.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "80672091db20273a15cf9fdd4e47ed43b5091ec9841bf4c6145c9dfbbcae09ed"
+checksum = "384e169cc618c613d5e3ca6404dda77a8685a63e08660dcc64abaf7da7cb0c7a"
 dependencies = [
  "clap_builder",
  "clap_derive",
@@ -318,13 +318,12 @@ dependencies = [
 
 [[package]]
 name = "clap_builder"
-version = "4.3.4"
+version = "4.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1458a1df40e1e2afebb7ab60ce55c1fa8f431146205aa5f4887e0b111c27636"
+checksum = "ef137bbe35aab78bdb468ccfba75a5f4d8321ae011d34063770780545176af2d"
 dependencies = [
  "anstream",
  "anstyle",
- "bitflags",
  "clap_lex",
  "once_cell",
  "strsim 0.10.0",
@@ -407,7 +406,7 @@ dependencies = [
  "anes",
  "cast",
  "ciborium",
- "clap 4.3.4",
+ "clap 4.3.10",
  "criterion-plot",
  "is-terminal",
  "itertools",
@@ -717,7 +716,7 @@ name = "gear-book"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "clap 4.3.4",
+ "clap 4.3.10",
  "rstest",
  "thiserror",
 ]
