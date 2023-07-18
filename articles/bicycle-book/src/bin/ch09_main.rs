@@ -22,7 +22,7 @@ fn show_trace<E: std::error::Error>(e: E) {
 fn main() {
     use std::io::{stdin, BufRead, BufReader};
 
-    let mut interp = Interpreter::default();
+    let mut interp = Interpreter;
 
     let stdin = stdin();
     let stdin = stdin.lock();
