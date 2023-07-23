@@ -13,4 +13,4 @@ clap = { version = "4.3.11", features = ["derive", "cargo"] }
 thiserror = "1.0.40"
 
 [dev-dependencies]
-rstest = "0.17.0"
+rstest = "0.18.1"
