@@ -10,7 +10,7 @@ rust-version.workspace = true
 [dependencies]
 anyhow = "1.0.72"
 clap = { version = "4.3.12", features = ["derive", "cargo"] }
-thiserror = "1.0.40"
+thiserror = "1.0.44"
 
 [dev-dependencies]
 rstest = "0.18.1"
