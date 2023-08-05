@@ -17,7 +17,7 @@ mod tests {
     }
 
     #[test]
-    fn test_validate_success() {
+    fn validate_success() {
         let data = SignupData {
             mail: "luis.stephens@example.com".to_string(),
             phone: "+1 (413) 487-0806".to_string(),
@@ -29,7 +29,7 @@ mod tests {
     }
 
     #[test]
-    fn test_validate_success_for_japanese() {
+    fn validate_success_for_japanese() {
         let data = SignupData {
             mail: "hiroshima_eri@example.com".to_string(),
             phone: "+81946267892".to_string(),
@@ -41,7 +41,7 @@ mod tests {
     }
 
     #[test]
-    fn test_validate_failure() {
+    fn validate_failure() {
         let data = SignupData {
             mail: "hiroshima_eri/example.com".to_string(),
             phone: "+81 080-3681-6493".to_string(),

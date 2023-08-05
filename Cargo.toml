@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/*"]
+members = ["standard-library", "third-party-library"]
 
 [workspace.package]
 version = "0.1.0"

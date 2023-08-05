@@ -5,11 +5,11 @@ mod tests {
 
     #[derive(Debug, Deserialize)]
     struct Config {
-        pub url: String,
+        url: String,
     }
 
     #[test]
-    fn test_config() -> Result<(), config::ConfigError> {
+    fn config() -> Result<(), config::ConfigError> {
         dotenv().ok();
 
         let config = config::Config::builder()

@@ -3,7 +3,7 @@ mod tests {
     use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
     #[test]
-    fn test_socket_addr_v4() {
+    fn socket_addr_v4() {
         let socket = SocketAddr::from(([127, 0, 0, 1], 8080));
 
         assert!(socket.is_ipv4());
@@ -12,7 +12,7 @@ mod tests {
     }
 
     #[test]
-    fn test_socket_addr_v4_from_str() {
+    fn socket_addr_v4_from_str() {
         let socket: SocketAddr = "127.0.0.1:8080".parse().unwrap();
 
         assert!(socket.is_ipv4());

@@ -20,11 +20,13 @@ fn foo() -> anyhow::Result<()> {
 }
 
 fn bar() -> anyhow::Result<()> {
-    baz().context("bar error") // ここからバックトレースに出力される
+    // ここからバックトレースに出力される
+    baz().context("bar error")
 }
 
 fn baz() -> std::io::Result<()> {
-    std::fs::File::open("not_exits.txt")?; // ここはバックトレースに含まれない
+    // ここはバックトレースに含まれない
+    std::fs::File::open("not_exits.txt")?;
     Ok(())
 }
 

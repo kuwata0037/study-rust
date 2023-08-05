@@ -8,18 +8,18 @@ edition.workspace = true
 
 [dependencies]
 anyhow = { version = "1.0.72", features = ["backtrace"] }
-config = "0.13.3"
-dotenvy = "0.15.7"
-phonenumber = "0.3.2"
-serde = { version = "1.0.179", features = ["derive"] }
-validator = { version = "0.16.1", features = ["derive", "phone"] }
 
 [dev-dependencies]
+config = "0.13.3"
 criterion = "0.5.1"
+dotenvy = "0.15.7"
+phonenumber = "0.3.2"
 proptest = "1.2.0"
 proptest-derive = "0.3.0"
 rstest = "0.18.1"
+serde = { version = "1.0.179", features = ["derive"] }
 speculate = "0.1.2"
+validator = { version = "0.16.1", features = ["derive", "phone"] }
 
 [[bench]]
 name = "criterion"
