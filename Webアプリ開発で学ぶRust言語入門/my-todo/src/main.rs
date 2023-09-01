@@ -12,9 +12,7 @@ use serde::{Deserialize, Serialize};
 async fn main() {
     tracing_subscriber::fmt::init();
 
-    let app = Router::new()
-        .route("/", get(root))
-        .route("/users", post(create_user));
+    let app = create_app();
 
     let addr = SocketAddr::from((Ipv4Addr::LOCALHOST, 3000));
 
@@ -25,16 +23,22 @@ async fn main() {
         .unwrap();
 }
 
+fn create_app() -> Router {
+    Router::new()
+        .route("/", get(root))
+        .route("/users", post(create_user))
+}
+
 async fn root() -> &'static str {
     "Hello, world!"
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 struct CreateUser {
     username: String,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 struct User {
     id: u64,
     name: String,
@@ -47,4 +51,49 @@ async fn create_user(Json(payload): Json<CreateUser>) -> impl IntoResponse {
     };
 
     (StatusCode::CREATED, Json(user))
+}
+
+#[cfg(test)]
+mod tests {
+    use axum::{body::Body, http::header, http::Method, http::Request};
+    use tower::ServiceExt;
+
+    use super::*;
+
+    #[tokio::test]
+    async fn should_return_hello_world() {
+        let req = Request::builder().uri("/").body(Body::empty()).unwrap();
+        let res = create_app().oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::OK);
+
+        let bytes = hyper::body::to_bytes(res.into_body()).await.unwrap();
+        let body = String::from_utf8(bytes.to_vec()).unwrap();
+
+        assert_eq!(body, "Hello, world!");
+    }
+
+    #[tokio::test]
+    async fn should_return_user_data() {
+        let req = Request::builder()
+            .uri("/users")
+            .method(Method::POST)
+            .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
+            .body(Body::from(r#"{ "username": "田中 太郎" }"#))
+            .unwrap();
+        let res = create_app().oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::CREATED);
+
+        let bytes = hyper::body::to_bytes(res.into_body()).await.unwrap();
+        let body = String::from_utf8(bytes.to_vec()).unwrap();
+        println!("{body:#?}");
+        let user: User = serde_json::from_str(&body).expect("cannot convert User instance.");
+
+        assert_eq!(
+            user,
+            User {
+                id: 1337,
+                name: "田中 太郎".to_string()
+            }
+        );
+    }
 }
