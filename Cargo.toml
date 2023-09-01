@@ -1,8 +1,8 @@
 [workspace]
 members = [
-    "standard-library",
-    "third-party-library",
-    "Webアプリ開発で学ぶRust言語入門/my-todo",
+    "./libraries/standard",
+    "./libraries/third-party",
+    "./books/Webアプリ開発で学ぶRust言語入門/my-todo",
 ]
 
 [workspace.package]
