@@ -3,6 +3,14 @@ mod tests {
     use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
     #[test]
+    fn ip_addr_v4_from_array() {
+        let ipv4_addr = Ipv4Addr::from([127, 0, 0, 1]);
+        let ip_addr = IpAddr::from([127, 0, 0, 1]);
+
+        assert_eq!(ipv4_addr, ip_addr);
+    }
+
+    #[test]
     fn socket_addr_v4() {
         let socket = SocketAddr::from(([127, 0, 0, 1], 8080));
 
