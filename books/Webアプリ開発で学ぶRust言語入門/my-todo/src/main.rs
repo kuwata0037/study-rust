@@ -85,7 +85,6 @@ mod tests {
 
         let bytes = hyper::body::to_bytes(res.into_body()).await.unwrap();
         let body = String::from_utf8(bytes.to_vec()).unwrap();
-        println!("{body:#?}");
         let user: User = serde_json::from_str(&body).expect("cannot convert User instance.");
 
         assert_eq!(
