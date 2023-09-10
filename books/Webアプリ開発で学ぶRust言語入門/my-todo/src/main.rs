@@ -63,11 +63,36 @@ mod tests {
     use axum::{
         body::Body,
         http::{header, Method, Request, StatusCode},
+        response::Response,
     };
     use tower::ServiceExt;
-    use web_rust_my_todo::handler::user::User;
+    use web_rust_my_todo::{
+        handler::user::User,
+        repository::todo::{CreateTodo, Todo},
+    };
 
     use super::*;
+
+    async fn res_to_todo(res: Response) -> Todo {
+        let bytes = hyper::body::to_bytes(res.into_body()).await.unwrap();
+        let body = String::from_utf8(bytes.to_vec()).unwrap();
+        let todo: Todo = serde_json::from_str(&body)
+            .expect(&format!("cannot convert Todo instance. body: {body}"));
+        todo
+    }
+
+    #[tokio::test]
+    async fn should_not_found() {
+        let repository = TodoRepositoryForMemory::new();
+
+        let req = Request::builder()
+            .uri("/not-exist")
+            .body(Body::empty())
+            .unwrap();
+        let res = create_app(repository).oneshot(req).await.unwrap();
+
+        assert_eq!(res.status(), StatusCode::NOT_FOUND);
+    }
 
     #[tokio::test]
     async fn should_return_hello_world() {
@@ -104,15 +129,106 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn should_not_found() {
+    async fn should_created_todo() {
         let repository = TodoRepositoryForMemory::new();
+        let req = Request::builder()
+            .uri("/todos")
+            .method(Method::POST)
+            .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
+            .body(Body::from(r#"{ "text": "should_return_created_todo" }"#))
+            .unwrap();
+
+        let res = create_app(repository).oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::CREATED);
+
+        let todo = res_to_todo(res).await;
+        let expected = Todo::new(1, "should_return_created_todo".to_string());
+        assert_eq!(todo, expected);
+    }
+
+    #[tokio::test]
+    async fn should_find_todo() {
+        let repository = TodoRepositoryForMemory::new();
+        repository
+            .create(CreateTodo::new("should_find_todo".to_string()))
+            .unwrap();
 
         let req = Request::builder()
-            .uri("/not-exist")
+            .uri("/todos/1")
+            .method(Method::GET)
             .body(Body::empty())
             .unwrap();
         let res = create_app(repository).oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::OK);
 
-        assert_eq!(res.status(), StatusCode::NOT_FOUND);
+        let todo = res_to_todo(res).await;
+        let expected = Todo::new(1, "should_find_todo".to_string());
+        assert_eq!(todo, expected);
+    }
+
+    #[tokio::test]
+    async fn should_all_todos() {
+        let repository = TodoRepositoryForMemory::new();
+        repository
+            .create(CreateTodo::new("should_all_todos".to_string()))
+            .unwrap();
+
+        let req = Request::builder()
+            .uri("/todos")
+            .method(Method::GET)
+            .body(Body::empty())
+            .unwrap();
+        let res = create_app(repository).oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::OK);
+
+        let bytes = hyper::body::to_bytes(res.into_body()).await.unwrap();
+        let body = String::from_utf8(bytes.to_vec()).unwrap();
+        let todos: Vec<Todo> = serde_json::from_str(&body)
+            .expect(&format!("cannot convert Todo instance. body: {body}"));
+        let expected = Todo::new(1, "should_all_todos".to_string());
+        assert_eq!(todos, vec![expected]);
+    }
+
+    #[tokio::test]
+    async fn should_update_todo() {
+        let repository = TodoRepositoryForMemory::new();
+        repository
+            .create(CreateTodo::new("before_update_todo".to_string()))
+            .unwrap();
+
+        let req = Request::builder()
+            .uri("/todos/1")
+            .method(Method::PATCH)
+            .header(header::CONTENT_TYPE, mime::APPLICATION_JSON.as_ref())
+            .body(Body::from(
+                r#"
+                {
+                    "text": "should_update_todo",
+                    "completed": false
+                }"#,
+            ))
+            .unwrap();
+        let res = create_app(repository).oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::CREATED);
+
+        let todo = res_to_todo(res).await;
+        let expected = Todo::new(1, "should_update_todo".to_string());
+        assert_eq!(todo, expected);
+    }
+
+    #[tokio::test]
+    async fn should_delete_todo() {
+        let repository = TodoRepositoryForMemory::new();
+        repository
+            .create(CreateTodo::new("should_delete_todo".to_string()))
+            .unwrap();
+
+        let req = Request::builder()
+            .uri("/todos/1")
+            .method(Method::DELETE)
+            .body(Body::empty())
+            .unwrap();
+        let res = create_app(repository).oneshot(req).await.unwrap();
+        assert_eq!(res.status(), StatusCode::NO_CONTENT);
     }
 }
