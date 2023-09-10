@@ -95,4 +95,15 @@ mod tests {
             }
         );
     }
+
+    #[tokio::test]
+    async fn should_not_found() {
+        let req = Request::builder()
+            .uri("/not-exist")
+            .body(Body::empty())
+            .unwrap();
+        let res = create_app().oneshot(req).await.unwrap();
+
+        assert_eq!(res.status(), StatusCode::NOT_FOUND);
+    }
 }
