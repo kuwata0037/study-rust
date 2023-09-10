@@ -9,16 +9,14 @@ use super::{CreateTodo, Todo, TodoRepository, UpdateTodo};
 
 type TodoData = HashMap<u32, Todo>;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct TodoRepositoryForMemory {
     pub(crate) store: Arc<RwLock<TodoData>>,
 }
 
 impl TodoRepositoryForMemory {
     pub fn new() -> Self {
-        Self {
-            store: Arc::default(),
-        }
+        Self::default()
     }
 
     fn write_store_ref(&self) -> RwLockWriteGuard<TodoData> {
@@ -41,7 +39,7 @@ impl TodoRepository for TodoRepositoryForMemory {
         let todo = store
             .get(&id)
             .cloned()
-            .ok_or_else(|| RepositoryError::NotFound(id))?;
+            .ok_or(RepositoryError::NotFound(id))?;
         Ok(todo)
     }
 
@@ -55,12 +53,10 @@ impl TodoRepository for TodoRepositoryForMemory {
 
     fn update(&self, id: u32, payload: UpdateTodo) -> Result<Todo, RepositoryError> {
         let mut store = self.write_store_ref();
-        let todo = store
-            .get(&id)
-            .ok_or_else(|| RepositoryError::NotFound(id))?;
+        let todo = store.get(&id).ok_or(RepositoryError::NotFound(id))?;
 
         let text = payload.text.unwrap_or_else(|| todo.text.clone());
-        let completed = payload.completed.unwrap_or_else(|| todo.completed);
+        let completed = payload.completed.unwrap_or(todo.completed);
         let todo = Todo {
             id,
             text,
@@ -72,9 +68,7 @@ impl TodoRepository for TodoRepositoryForMemory {
 
     fn delete(&self, id: u32) -> Result<(), RepositoryError> {
         let mut store = self.write_store_ref();
-        store
-            .remove(&id)
-            .ok_or_else(|| RepositoryError::NotFound(id))?;
+        store.remove(&id).ok_or(RepositoryError::NotFound(id))?;
         Ok(())
     }
 }

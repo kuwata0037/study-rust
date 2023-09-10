@@ -16,20 +16,20 @@ pub trait TodoRepository: Send + Sync + 'static {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct CreateTodo {
-    pub(crate) text: String,
+    text: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct UpdateTodo {
-    pub(crate) text: Option<String>,
-    pub(crate) completed: Option<bool>,
+    text: Option<String>,
+    completed: Option<bool>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Todo {
-    pub(crate) id: u32,
-    pub(crate) text: String,
-    pub(crate) completed: bool,
+    id: u32,
+    text: String,
+    completed: bool,
 }
 
 impl Todo {

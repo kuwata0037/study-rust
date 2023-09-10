@@ -1,5 +1,6 @@
-use thiserror::Error;
 pub mod todo;
+
+use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum RepositoryError {
