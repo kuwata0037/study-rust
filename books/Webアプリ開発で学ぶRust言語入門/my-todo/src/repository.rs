@@ -12,7 +12,7 @@ pub enum RepositoryError {
     NotFound(i32),
 }
 
-pub trait TodoRepository: Clone + Send + Sync + 'static {
+pub trait TodoRepository: Send + Sync + 'static {
     fn all(&self) -> Vec<Todo>;
     fn find(&self, id: i32) -> Option<Todo>;
     fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError>;
