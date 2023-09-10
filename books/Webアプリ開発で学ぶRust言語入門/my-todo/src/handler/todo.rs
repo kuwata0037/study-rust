@@ -7,7 +7,7 @@ use axum::{
     Json,
 };
 
-use crate::repository::{CreateTodo, TodoRepository, UpdateTodo};
+use crate::repository::todo::{CreateTodo, TodoRepository, UpdateTodo};
 
 pub async fn create_todo<R: TodoRepository>(
     State(repository): State<Arc<R>>,

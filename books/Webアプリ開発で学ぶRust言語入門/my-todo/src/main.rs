@@ -7,9 +7,6 @@
 //!     - PATCH: Todo情報の更新
 //!     - DELETE: Todo情報の削除
 
-mod handler;
-mod repository;
-
 use std::{
     net::{Ipv4Addr, SocketAddr},
     sync::Arc,
@@ -19,10 +16,14 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use handler::todo::{all_todo, delete_todo, find_todo, update_todo};
-use repository::TodoRepository;
 
-use crate::repository::TodoRepositoryForMemory;
+use web_rust_my_todo::{
+    handler::{
+        todo::{all_todo, create_todo, delete_todo, find_todo, update_todo},
+        user::create_user,
+    },
+    repository::todo::{TodoRepository, TodoRepositoryForMemory},
+};
 
 #[tokio::main]
 async fn main() {
@@ -44,8 +45,8 @@ async fn main() {
 fn create_app<R: TodoRepository>(repository: R) -> Router {
     Router::new()
         .route("/", get(root))
-        .route("/users", post(handler::user::create_user))
-        .route("/todos", get(all_todo).post(handler::todo::create_todo))
+        .route("/users", post(create_user))
+        .route("/todos", get(all_todo).post(create_todo))
         .route(
             "/todos/:id",
             get(find_todo).patch(update_todo).delete(delete_todo),
@@ -64,8 +65,7 @@ mod tests {
         http::{header, Method, Request, StatusCode},
     };
     use tower::ServiceExt;
-
-    use crate::handler::user::User;
+    use web_rust_my_todo::handler::user::User;
 
     use super::*;
 
