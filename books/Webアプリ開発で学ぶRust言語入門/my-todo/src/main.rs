@@ -19,6 +19,7 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use handler::todo::{all_todo, delete_todo, find_todo, update_todo};
 use repository::TodoRepository;
 
 use crate::repository::TodoRepositoryForMemory;
@@ -44,7 +45,11 @@ fn create_app<R: TodoRepository>(repository: R) -> Router {
     Router::new()
         .route("/", get(root))
         .route("/users", post(handler::user::create_user))
-        .route("/todos", post(handler::todo::create_todo))
+        .route("/todos", get(all_todo).post(handler::todo::create_todo))
+        .route(
+            "/todos/:id",
+            get(find_todo).patch(update_todo).delete(delete_todo),
+        )
         .with_state(Arc::new(repository))
 }
 
