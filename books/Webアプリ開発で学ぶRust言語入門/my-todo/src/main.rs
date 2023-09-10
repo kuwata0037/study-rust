@@ -7,21 +7,21 @@
 //!     - PATCH: Todo情報の更新
 //!     - DELETE: Todo情報の削除
 
+mod handler;
+mod repository;
+
 use std::{
-    collections::HashMap,
     net::{Ipv4Addr, SocketAddr},
-    sync::{Arc, RwLock},
+    sync::Arc,
 };
 
 use axum::{
-    extract::State,
-    http::StatusCode,
-    response::IntoResponse,
     routing::{get, post},
-    Json, Router,
+    Router,
 };
-use serde::{Deserialize, Serialize};
-use thiserror::Error;
+use repository::TodoRepository;
+
+use crate::repository::TodoRepositoryForMemory;
 
 #[tokio::main]
 async fn main() {
@@ -43,8 +43,8 @@ async fn main() {
 fn create_app<R: TodoRepository>(repository: R) -> Router {
     Router::new()
         .route("/", get(root))
-        .route("/users", post(create_user))
-        .route("/todos", post(create_todo))
+        .route("/users", post(handler::user::create_user))
+        .route("/todos", post(handler::todo::create_todo))
         .with_state(Arc::new(repository))
 }
 
@@ -52,118 +52,15 @@ async fn root() -> &'static str {
     "Hello, world!"
 }
 
-#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
-struct CreateUser {
-    username: String,
-}
-
-#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
-struct User {
-    id: u64,
-    name: String,
-}
-
-async fn create_user(Json(payload): Json<CreateUser>) -> impl IntoResponse {
-    let user = User {
-        id: 1337,
-        name: payload.username,
-    };
-
-    (StatusCode::CREATED, Json(user))
-}
-
-async fn create_todo<R: TodoRepository>(
-    State(repository): State<Arc<R>>,
-    Json(payload): Json<CreateTodo>,
-) -> impl IntoResponse {
-    let todo = repository.create(payload).unwrap();
-
-    (StatusCode::CREATED, Json(todo))
-}
-
-#[derive(Debug, Error)]
-enum RepositoryError {
-    #[error("NotFound, id is {0}")]
-    NotFound(i32),
-}
-
-trait TodoRepository: Clone + Send + Sync + 'static {
-    fn all(&self) -> Vec<Todo>;
-    fn find(&self, id: i32) -> Option<Todo>;
-    fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError>;
-    fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo, RepositoryError>;
-    fn delete(&self, id: i32) -> Result<(), RepositoryError>;
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-struct Todo {
-    id: i32,
-    text: String,
-    completed: bool,
-}
-
-impl Todo {
-    fn new(id: i32, text: String) -> Self {
-        Self {
-            id,
-            text,
-            completed: false,
-        }
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-struct CreateTodo {
-    text: String,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-struct UpdateTodo {
-    text: Option<String>,
-    completed: Option<bool>,
-}
-
-type TodoDatas = HashMap<i32, Todo>;
-
-#[derive(Debug, Clone)]
-struct TodoRepositoryForMemory {
-    store: Arc<RwLock<TodoDatas>>,
-}
-
-impl TodoRepositoryForMemory {
-    fn new() -> Self {
-        Self {
-            store: Arc::default(),
-        }
-    }
-}
-
-impl TodoRepository for TodoRepositoryForMemory {
-    fn all(&self) -> Vec<Todo> {
-        todo!()
-    }
-
-    fn find(&self, id: i32) -> Option<Todo> {
-        todo!()
-    }
-
-    fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError> {
-        todo!()
-    }
-
-    fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo, RepositoryError> {
-        todo!()
-    }
-
-    fn delete(&self, id: i32) -> Result<(), RepositoryError> {
-        todo!()
-    }
-}
-
 #[cfg(test)]
 mod tests {
-    use axum::{body::Body, http::header, http::Method, http::Request};
+    use axum::{
+        body::Body,
+        http::{header, Method, Request, StatusCode},
+    };
     use tower::ServiceExt;
+
+    use crate::handler::user::User;
 
     use super::*;
 
@@ -198,13 +95,7 @@ mod tests {
         let body = String::from_utf8(bytes.to_vec()).unwrap();
         let user: User = serde_json::from_str(&body).expect("cannot convert User instance.");
 
-        assert_eq!(
-            user,
-            User {
-                id: 1337,
-                name: "田中 太郎".to_string()
-            }
-        );
+        assert_eq!(user, User::new(1337, "田中 太郎".to_string()));
     }
 
     #[tokio::test]
