@@ -9,26 +9,26 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum RepositoryError {
     #[error("NotFound, id is {0}")]
-    NotFound(i32),
+    NotFound(u32),
 }
 
 pub trait TodoRepository: Send + Sync + 'static {
     fn all(&self) -> Vec<Todo>;
-    fn find(&self, id: i32) -> Option<Todo>;
+    fn find(&self, id: u32) -> Option<Todo>;
     fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError>;
-    fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo, RepositoryError>;
-    fn delete(&self, id: i32) -> Result<(), RepositoryError>;
+    fn update(&self, id: u32, payload: UpdateTodo) -> Result<Todo, RepositoryError>;
+    fn delete(&self, id: u32) -> Result<(), RepositoryError>;
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Todo {
-    id: i32,
+    id: u32,
     text: String,
     completed: bool,
 }
 
 impl Todo {
-    pub fn new(id: i32, text: String) -> Self {
+    pub fn new(id: u32, text: String) -> Self {
         Self {
             id,
             text,
@@ -48,7 +48,7 @@ pub struct UpdateTodo {
     completed: Option<bool>,
 }
 
-type TodoData = HashMap<i32, Todo>;
+type TodoData = HashMap<u32, Todo>;
 
 #[derive(Debug, Clone)]
 pub struct TodoRepositoryForMemory {
@@ -77,20 +77,20 @@ impl TodoRepository for TodoRepositoryForMemory {
         store.values().cloned().collect()
     }
 
-    fn find(&self, id: i32) -> Option<Todo> {
+    fn find(&self, id: u32) -> Option<Todo> {
         let store = self.read_store_ref();
         store.get(&id).cloned()
     }
 
     fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError> {
         let mut store = self.write_store_ref();
-        let id = (store.len() + 1) as i32;
+        let id = (store.len() + 1) as u32;
         let todo = Todo::new(id, payload.text);
         store.insert(id, todo.clone());
         Ok(todo)
     }
 
-    fn update(&self, id: i32, payload: UpdateTodo) -> Result<Todo, RepositoryError> {
+    fn update(&self, id: u32, payload: UpdateTodo) -> Result<Todo, RepositoryError> {
         let mut store = self.write_store_ref();
         let todo = store
             .get(&id)
@@ -107,7 +107,7 @@ impl TodoRepository for TodoRepositoryForMemory {
         Ok(todo)
     }
 
-    fn delete(&self, id: i32) -> Result<(), RepositoryError> {
+    fn delete(&self, id: u32) -> Result<(), RepositoryError> {
         let mut store = self.write_store_ref();
         store
             .remove(&id)
