@@ -7,8 +7,8 @@ use serde::Deserialize;
 use serde::Serialize;
 
 pub trait TodoRepository: Send + Sync + 'static {
-    fn all(&self) -> Vec<Todo>;
-    fn find(&self, id: u32) -> Option<Todo>;
+    fn all(&self) -> Result<Vec<Todo>, RepositoryError>;
+    fn find(&self, id: u32) -> Result<Todo, RepositoryError>;
     fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError>;
     fn update(&self, id: u32, payload: UpdateTodo) -> Result<Todo, RepositoryError>;
     fn delete(&self, id: u32) -> Result<(), RepositoryError>;

@@ -31,14 +31,18 @@ impl TodoRepositoryForMemory {
 }
 
 impl TodoRepository for TodoRepositoryForMemory {
-    fn all(&self) -> Vec<Todo> {
+    fn all(&self) -> Result<Vec<Todo>, RepositoryError> {
         let store = self.read_store_ref();
-        store.values().cloned().collect()
+        Ok(store.values().cloned().collect())
     }
 
-    fn find(&self, id: u32) -> Option<Todo> {
+    fn find(&self, id: u32) -> Result<Todo, RepositoryError> {
         let store = self.read_store_ref();
-        store.get(&id).cloned()
+        let todo = store
+            .get(&id)
+            .cloned()
+            .ok_or_else(|| RepositoryError::NotFound(id))?;
+        Ok(todo)
     }
 
     fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError> {
@@ -97,7 +101,7 @@ pub(crate) mod tests {
         assert_eq!(expected, todo);
 
         // 3. all
-        let todo = repository.all();
+        let todo = repository.all().unwrap();
         assert_eq!(vec![expected], todo);
 
         // 4. update

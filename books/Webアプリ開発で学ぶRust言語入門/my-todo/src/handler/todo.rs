@@ -9,6 +9,11 @@ use axum::{
 
 use crate::repository::todo::{CreateTodo, TodoRepository, UpdateTodo};
 
+pub async fn all_todo<R: TodoRepository>(State(repository): State<Arc<R>>) -> impl IntoResponse {
+    let todo = repository.all().unwrap();
+    (StatusCode::OK, Json(todo))
+}
+
 pub async fn create_todo<R: TodoRepository>(
     State(repository): State<Arc<R>>,
     Json(payload): Json<CreateTodo>,
@@ -22,13 +27,8 @@ pub async fn find_todo<R: TodoRepository>(
     State(repository): State<Arc<R>>,
     Path(id): Path<u32>,
 ) -> Result<impl IntoResponse, StatusCode> {
-    let todo = repository.find(id).ok_or(StatusCode::NOT_FOUND)?;
+    let todo = repository.find(id).map_err(|_e| StatusCode::NOT_FOUND)?;
     Ok((StatusCode::OK, Json(todo)))
-}
-
-pub async fn all_todo<R: TodoRepository>(State(repository): State<Arc<R>>) -> impl IntoResponse {
-    let todo = repository.all();
-    (StatusCode::OK, Json(todo))
 }
 
 pub async fn update_todo<R: TodoRepository>(
