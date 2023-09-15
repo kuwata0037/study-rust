@@ -28,13 +28,14 @@ impl TodoRepositoryForMemory {
     }
 }
 
+#[axum::async_trait]
 impl TodoRepository for TodoRepositoryForMemory {
-    fn all(&self) -> Result<Vec<Todo>, RepositoryError> {
+    async fn all(&self) -> Result<Vec<Todo>, RepositoryError> {
         let store = self.read_store_ref();
         Ok(store.values().cloned().collect())
     }
 
-    fn find(&self, id: u32) -> Result<Todo, RepositoryError> {
+    async fn find(&self, id: u32) -> Result<Todo, RepositoryError> {
         let store = self.read_store_ref();
         let todo = store
             .get(&id)
@@ -43,7 +44,7 @@ impl TodoRepository for TodoRepositoryForMemory {
         Ok(todo)
     }
 
-    fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError> {
+    async fn create(&self, payload: CreateTodo) -> Result<Todo, RepositoryError> {
         let mut store = self.write_store_ref();
         let id = (store.len() + 1) as u32;
         let todo = Todo::new(id, payload.text);
@@ -51,7 +52,7 @@ impl TodoRepository for TodoRepositoryForMemory {
         Ok(todo)
     }
 
-    fn update(&self, id: u32, payload: UpdateTodo) -> Result<Todo, RepositoryError> {
+    async fn update(&self, id: u32, payload: UpdateTodo) -> Result<Todo, RepositoryError> {
         let mut store = self.write_store_ref();
         let todo = store.get(&id).ok_or(RepositoryError::NotFound(id))?;
 
@@ -66,7 +67,7 @@ impl TodoRepository for TodoRepositoryForMemory {
         Ok(todo)
     }
 
-    fn delete(&self, id: u32) -> Result<(), RepositoryError> {
+    async fn delete(&self, id: u32) -> Result<(), RepositoryError> {
         let mut store = self.write_store_ref();
         store.remove(&id).ok_or(RepositoryError::NotFound(id))?;
         Ok(())
@@ -77,8 +78,8 @@ impl TodoRepository for TodoRepositoryForMemory {
 pub(crate) mod tests {
     use super::*;
 
-    #[test]
-    fn todo_crud_scenario() {
+    #[tokio::test]
+    async fn todo_crud_scenario() {
         let id = 1;
         let text = "todo text".to_string();
         let expected = Todo::new(id, text.clone());
@@ -87,15 +88,16 @@ pub(crate) mod tests {
         let repository = TodoRepositoryForMemory::new();
         let todo = repository
             .create(CreateTodo { text })
+            .await
             .expect("failed create todo.");
         assert_eq!(expected, todo);
 
         // 2. find
-        let todo = repository.find(id).expect("failed find todo.");
+        let todo = repository.find(id).await.expect("failed find todo.");
         assert_eq!(expected, todo);
 
         // 3. all
-        let todo = repository.all().unwrap();
+        let todo = repository.all().await.unwrap();
         assert_eq!(vec![expected], todo);
 
         // 4. update
@@ -108,6 +110,7 @@ pub(crate) mod tests {
                     completed: Some(true),
                 },
             )
+            .await
             .expect("failed update todo.");
         assert_eq!(
             Todo {
@@ -119,7 +122,7 @@ pub(crate) mod tests {
         );
 
         // 5. delete
-        let result = repository.delete(id);
+        let result = repository.delete(id).await;
         assert!(result.is_ok(), "failed delete todo: {result:?}")
     }
 }

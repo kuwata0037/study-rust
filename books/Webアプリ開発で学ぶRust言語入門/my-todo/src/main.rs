@@ -151,6 +151,7 @@ mod tests {
         let repository = TodoRepositoryForMemory::new();
         repository
             .create(CreateTodo::new("should_find_todo".to_string()))
+            .await
             .unwrap();
 
         let req = Request::builder()
@@ -171,6 +172,7 @@ mod tests {
         let repository = TodoRepositoryForMemory::new();
         repository
             .create(CreateTodo::new("should_all_todos".to_string()))
+            .await
             .unwrap();
 
         let req = Request::builder()
@@ -194,6 +196,7 @@ mod tests {
         let repository = TodoRepositoryForMemory::new();
         repository
             .create(CreateTodo::new("before_update_todo".to_string()))
+            .await
             .unwrap();
 
         let req = Request::builder()
@@ -221,6 +224,7 @@ mod tests {
         let repository = TodoRepositoryForMemory::new();
         repository
             .create(CreateTodo::new("should_delete_todo".to_string()))
+            .await
             .unwrap();
 
         let req = Request::builder()
