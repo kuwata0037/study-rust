@@ -1,6 +1,8 @@
 mod memory;
+mod postgres;
 
 pub use memory::TodoRepositoryForMemory;
+pub use postgres::TodoRepositoryForPostgres;
 
 use super::RepositoryError;
 use serde::Deserialize;

@@ -17,19 +17,26 @@ use axum::{
     Router,
 };
 
+use sqlx::PgPool;
 use web_rust_my_todo::{
     handler::{
         todo::{all_todo, create_todo, delete_todo, find_todo, update_todo},
         user::create_user,
     },
-    repository::todo::{TodoRepository, TodoRepositoryForMemory},
+    repository::todo::{TodoRepository, TodoRepositoryForPostgres},
 };
 
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
 
-    let repository = TodoRepositoryForMemory::new();
+    let database_url = std::env::var("DATABASE_URL").expect("Undefined [DATABASE_URL]");
+
+    tracing::debug!("start connect database");
+    let pool = PgPool::connect(&database_url)
+        .await
+        .expect(&format!("fail connect database, url is [{database_url}]"));
+    let repository = TodoRepositoryForPostgres::new(pool);
 
     let app = create_app(repository);
 
@@ -68,7 +75,7 @@ mod tests {
     use tower::ServiceExt;
     use web_rust_my_todo::{
         handler::user::User,
-        repository::todo::{CreateTodo, Todo},
+        repository::todo::{CreateTodo, Todo, TodoRepositoryForMemory},
     };
 
     use super::*;
