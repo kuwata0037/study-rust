@@ -38,7 +38,7 @@ async fn main() {
     tracing::debug!("start connect database");
     let pool = PgPool::connect(&database_url)
         .await
-        .expect(&format!("fail connect database, url is [{database_url}]"));
+        .expect(&format!("fail connect database"));
     let repository = TodoRepositoryForPostgres::new(pool);
 
     let app = create_app(repository);

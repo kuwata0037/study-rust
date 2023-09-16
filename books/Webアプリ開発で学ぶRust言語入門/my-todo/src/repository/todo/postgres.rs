@@ -132,3 +132,63 @@ impl TodoRepository for TodoRepositoryForPostgres {
 fn handle_sqlx_error(error: sqlx::Error) -> RepositoryError {
     RepositoryError::Unexpected(error.into())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[ignore = "Dependence of database"]
+    #[tokio::test]
+    async fn crud_scenario() {
+        let database_url = std::env::var("DATABASE_URL").expect("undefined [DATABASE_URL]");
+        let pool = PgPool::connect(&database_url)
+            .await
+            .expect(&format!("fail connect database"));
+        let repository = TodoRepositoryForPostgres::new(pool);
+
+        let todo_text = "[crud_scenario] text";
+
+        // create
+        let created = repository
+            .create(CreateTodo {
+                text: todo_text.to_string(),
+            })
+            .await
+            .expect("fail create todo");
+        assert_eq!(created.text, todo_text);
+        assert!(!created.completed);
+
+        // find
+        let todo = repository.find(created.id).await.expect("fail find todo");
+        assert_eq!(created, todo);
+
+        // all
+        let todos = repository.all().await.expect("fail fetch all todos");
+        let todo = todos.into_iter().next().unwrap();
+        assert_eq!(created, todo);
+
+        // update
+        let updated_text = "[crud_scenario] updated text";
+        let todo = repository
+            .update(
+                created.id,
+                UpdateTodo {
+                    text: Some(updated_text.to_string()),
+                    completed: Some(true),
+                },
+            )
+            .await
+            .expect("fail update todo");
+        assert_eq!(created.id, todo.id);
+        assert_eq!(todo.text, updated_text);
+        assert!(todo.completed);
+
+        // delete
+        repository
+            .delete(created.id)
+            .await
+            .expect("fail delete todo");
+        let res = repository.find(created.id).await;
+        assert!(res.is_err())
+    }
+}
