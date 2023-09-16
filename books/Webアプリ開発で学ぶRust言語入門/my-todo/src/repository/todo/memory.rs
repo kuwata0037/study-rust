@@ -11,7 +11,7 @@ type TodoData = HashMap<u32, Todo>;
 
 #[derive(Debug, Clone, Default)]
 pub struct TodoRepositoryForMemory {
-    pub(crate) store: Arc<RwLock<TodoData>>,
+    store: Arc<RwLock<TodoData>>,
 }
 
 impl TodoRepositoryForMemory {
