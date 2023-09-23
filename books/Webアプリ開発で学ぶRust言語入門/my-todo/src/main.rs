@@ -22,20 +22,20 @@ use web_rust_my_todo::{
 async fn main() {
     tracing_subscriber::fmt::init();
 
-    tracing::debug!("start connect database");
+    tracing::debug!("connect to database");
     let database_url = std::env::var("DATABASE_URL").expect("Undefined [DATABASE_URL]");
     let pool = PgPool::connect(&database_url)
         .await
-        .expect(&format!("fail connect database"));
+        .expect("fail connect database");
 
     let todo_repository = TodoRepositoryForPostgres::new(pool.clone());
-    let label_repository = LabelRepositoryForPostgres::new(pool);
+    let label_repository = LabelRepositoryForPostgres::new(pool.clone());
 
     let app = create_app(todo_repository, label_repository);
 
     let addr = SocketAddr::from((Ipv4Addr::LOCALHOST, 3000));
 
-    tracing::debug!("listening on {}", addr);
+    tracing::debug!("listening on {addr}");
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .with_graceful_shutdown(shutdown_signal())

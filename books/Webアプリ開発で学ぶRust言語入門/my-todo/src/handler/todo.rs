@@ -1,11 +1,6 @@
 use std::sync::Arc;
 
-use axum::{
-    extract::{Path, State},
-    http::StatusCode,
-    response::IntoResponse,
-    Extension, Json,
-};
+use axum::{extract::Path, http::StatusCode, response::IntoResponse, Extension, Json};
 
 use crate::repository::todo::{CreateTodo, TodoRepository, UpdateTodo};
 

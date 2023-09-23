@@ -33,3 +33,9 @@ pub struct Label {
     id: i32,
     name: String,
 }
+
+impl Label {
+    fn new(id: i32, name: String) -> Self {
+        Self { id, name }
+    }
+}
