@@ -18,7 +18,7 @@ phonenumber = "0.3.3"
 proptest = "1.4.0"
 proptest-derive = "0.4.0"
 rstest = "0.18.2"
-serde = { version = "1.0.192", features = ["derive"] }
+serde = { version = "1.0.193", features = ["derive"] }
 validator = { version = "0.16.1", features = ["derive", "phone"] }
 
 [[bench]]
