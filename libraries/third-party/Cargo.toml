@@ -11,7 +11,7 @@ anyhow = { version = "1.0.75", features = ["backtrace"] }
 thiserror = "1.0.50"
 
 [dev-dependencies]
-config = "0.13.3"
+config = "0.13.4"
 criterion = "0.5.1"
 dotenvy = "0.15.7"
 phonenumber = "0.3.3"
