@@ -53,24 +53,24 @@ fn my_inner() -> Result<(), MyError> {
 
 fn main() {
     let parse_int_error = parse_int("not a number").err().unwrap();
-    println!("-----#[from] + {{0}}の場合-----");
+    println!("-----#[from] + {{0}} の場合-----");
     println!("\n{parse_int_error}\n");
 
-    println!("-----#[from] + {{0}} + anyhowの場合-----");
+    println!("-----#[from] + {{0}} + anyhow の場合-----");
     println!("\n{:?}\n", anyhow::anyhow!(parse_int_error));
 
     let parse_float_error = parse_float("not a number").err().unwrap();
-    println!("-----#[from] + transparentの場合-----");
+    println!("-----#[from] + transparent の場合-----");
     println!("\n{parse_float_error}\n");
 
-    println!("-----#[from] + transparent + anyhowの場合-----");
+    println!("-----#[from] + transparent + anyhow の場合-----");
     println!("\n{:?}\n", anyhow::anyhow!(parse_float_error));
 
     let try_from_int_error = try_from_int(-10).err().unwrap();
-    println!("-----#[from] + sourceの場合-----");
+    println!("-----#[from] + source の場合-----");
     println!("\n{try_from_int_error}\n");
 
-    println!("-----#[from] + source + anyhowの場合-----");
+    println!("-----#[from] + source + anyhow の場合-----");
     println!("\n{:?}\n", anyhow::anyhow!(try_from_int_error));
 
     let my_inner_error = my_inner().err().unwrap();
