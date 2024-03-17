@@ -25,7 +25,7 @@ mod tests {
             first_name: "Jennie".to_string(),
             age: 14,
         };
-        data.validate().unwrap();
+        assert_eq!(data.validate(), Ok(()));
     }
 
     #[test]
@@ -37,7 +37,7 @@ mod tests {
             first_name: "廣島".to_string(),
             age: 24,
         };
-        data.validate().unwrap();
+        assert_eq!(data.validate(), Ok(()));
     }
 
     #[test]
