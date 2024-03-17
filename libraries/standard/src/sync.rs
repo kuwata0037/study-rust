@@ -7,7 +7,7 @@ mod tests {
     };
 
     #[test]
-    fn mpsc() -> Result<(), Box<dyn Error + 'static + Send + Sync>> {
+    fn test_mpsc() -> Result<(), Box<dyn Error + 'static + Send + Sync>> {
         let (tx, rx) = mpsc::channel();
         thread::spawn(move || {
             tx.send("test1".to_string()).unwrap();
@@ -21,7 +21,7 @@ mod tests {
     }
 
     #[test]
-    fn mutex() {
+    fn test_mutex() {
         let counter = Arc::new(Mutex::new(0));
         let mut handlers = vec![];
 

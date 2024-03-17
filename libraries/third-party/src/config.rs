@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use dotenvy::dotenv;
     use serde::Deserialize;
 
     #[derive(Debug, Deserialize)]
@@ -9,8 +8,8 @@ mod tests {
     }
 
     #[test]
-    fn config() -> Result<(), config::ConfigError> {
-        dotenv().ok();
+    fn test_config() -> Result<(), config::ConfigError> {
+        std::env::set_var("url", "localhost");
 
         let config = config::Config::builder()
             .add_source(config::Environment::default())

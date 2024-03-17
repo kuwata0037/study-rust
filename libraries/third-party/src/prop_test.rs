@@ -30,18 +30,18 @@ mod tests {
 
     proptest! {
         #[test]
-        fn addition_in_proptest_macro(a in 0..10, b in 0..10) {
+        fn test_addition_in_proptest_macro(a in 0..10, b in 0..10) {
             prop_assert!(a+b <= 18);
         }
 
         #[test]
-        fn string_concat_in_proptest_macro(a in "[0-9]{4}-[0-9]{2}-[0-9]{2}", b: String) {
+        fn test_string_concat_in_proptest_macro(a in "[0-9]{4}-[0-9]{2}-[0-9]{2}", b: String) {
             let cat = format!("{a}{b}");
             prop_assert_eq!(a.len() + b.len(), cat.len());
         }
 
         #[test]
-        fn generate_struct_in_proptest_macro(a: StructArbitraryDeriveTest) {
+        fn test_generate_struct_in_proptest_macro(a: StructArbitraryDeriveTest) {
             prop_assert!(!a.name.is_empty());
             prop_assert!(a.attribute.len() < 5);
             prop_assert!(a.attribute.values().next().unwrap().len() < 10);
@@ -49,7 +49,7 @@ mod tests {
     }
 
     #[test]
-    fn use_test_runner() {
+    fn test_use_test_runner() {
         let mut runner = TestRunner::default();
 
         runner
@@ -64,7 +64,7 @@ mod tests {
     }
 
     #[test]
-    fn generate_any_value() {
+    fn test_generate_any_value() {
         let mut runner = TestRunner::default();
 
         let _value = proptest::prelude::any::<u32>()
@@ -79,7 +79,7 @@ mod tests {
     }
 
     #[test]
-    fn generate_fixed_size_vec() {
+    fn test_generate_fixed_size_vec() {
         let mut runner = TestRunner::default();
 
         let strategy =

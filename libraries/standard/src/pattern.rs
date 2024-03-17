@@ -12,7 +12,7 @@ mod tests {
     }
 
     #[test]
-    fn match_literal() {
+    fn test_match_literal() {
         let x = 3;
         let result = match x {
             1 => "one",
@@ -24,7 +24,7 @@ mod tests {
     }
 
     #[test]
-    fn match_multi() {
+    fn test_match_multi() {
         let x = 1;
         let result = match x {
             1 | 2 => "one or two",
@@ -35,7 +35,7 @@ mod tests {
     }
 
     #[test]
-    fn match_range_number() {
+    fn test_match_range_number() {
         let x = 5;
         let result = match x {
             0..=5 => "one through five",
@@ -45,7 +45,7 @@ mod tests {
     }
 
     #[test]
-    fn match_range_char() {
+    fn test_match_range_char() {
         let c = 'j';
         let result = match c {
             'a'..='j' => "early ASCII letter",
@@ -56,7 +56,7 @@ mod tests {
     }
 
     #[test]
-    fn match_destructuring_struct() {
+    fn test_match_destructuring_struct() {
         let p = Point::new(0, 7);
         let result = match p {
             Point { x, y: 0 } => format!("On the x axis at {x}"),
@@ -67,19 +67,19 @@ mod tests {
     }
 
     #[test]
-    fn match_guard() {
+    fn test_match_guard() {
         let inner_value = 5;
         let option = Some(inner_value);
         let result = match option {
             Some(50) => "Got 50".to_string(),
-            Some(n) if n == inner_value => format!("Matched, n = {inner_value:?}"),
+            Some(n) if n == inner_value => format!("Matched, n = {inner_value}"),
             _ => format!("Default case, x = {option:?}"),
         };
         assert_eq!(result, "Matched, n = 5");
     }
 
     #[test]
-    fn match_guard_struct() {
+    fn test_match_guard_struct() {
         enum Message {
             Hello { id: i32 },
         }
@@ -96,14 +96,14 @@ mod tests {
     }
 
     #[test]
-    fn destructuring_reference() {
+    fn test_destructuring_reference() {
         let v = vec![Point::new(0, 0), Point::new(1, 5), Point::new(10, -3)];
         let sum = v.iter().map(|&Point { x, y }| x * x + y * y).sum::<i32>();
         assert_eq!(sum, 135);
     }
 
     #[test]
-    fn ignoring_value() {
+    fn test_ignoring_value() {
         let numbers = (2, 4, 8, 16, 32);
         let (first, .., last) = numbers;
         assert_eq!(first, 2);

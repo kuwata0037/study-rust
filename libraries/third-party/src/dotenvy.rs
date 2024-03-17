@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     #[test]
-    fn dotenv() {
+    fn test_dotenv() {
         // .env ファイルの値を読み込んで、環境変数として参照できるようにしている。
         dotenvy::dotenv().unwrap();
         // 環境変数経由で参照
@@ -9,7 +9,7 @@ mod tests {
     }
 
     #[test]
-    fn dotenv_var() {
+    fn test_dotenv_var() {
         // 直接キーを指定して参照することもできる
         assert_eq!(dotenvy::var("URL").unwrap(), "localhost");
     }
