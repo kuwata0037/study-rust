@@ -1,3 +1,10 @@
+//! criterion によるベンチマークの動作確認
+//!
+//! ## 実行方法
+//!
+//! ```bash
+//! cargo bench --bench criterion
+//! ```
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn fibonacci(n: u64) -> u64 {
