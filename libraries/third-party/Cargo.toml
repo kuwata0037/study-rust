@@ -8,7 +8,7 @@ edition.workspace = true
 
 [dependencies]
 anyhow = { version = "1.0.80", features = ["backtrace"] }
-thiserror = "1.0.57"
+thiserror = "1.0.58"
 
 [dev-dependencies]
 config = "0.14.0"
