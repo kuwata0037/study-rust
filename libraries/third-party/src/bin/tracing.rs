@@ -75,7 +75,8 @@ fn main() {
 
     tracing::subscriber::with_default(
         tracing_subscriber::registry()
-            .with(tracing_subscriber::fmt::layer().json().flatten_event(true)),
+            .with(tracing_subscriber::fmt::layer().json().flatten_event(true))
+            .with(tracing_subscriber::EnvFilter::from_default_env()),
         || {
             tracing::info!(format = "flatten json", "start tracing subscriber");
             service(Parameter {
