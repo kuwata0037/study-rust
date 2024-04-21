@@ -3,13 +3,12 @@ use tracing_subscriber::layer::SubscriberExt;
 #[derive(Debug)]
 struct Parameter {
     id: u32,
-    #[allow(dead_code)]
     name: String,
 }
 
 #[tracing::instrument]
 fn service(param: Parameter) {
-    tracing::info!(?param, "call service");
+    tracing::info!(?param, param.id, param.name, "call service");
     use_case(param.id + 1);
 }
 
