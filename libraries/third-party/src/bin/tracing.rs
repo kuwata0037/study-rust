@@ -19,7 +19,7 @@ fn use_case(id: u32) {
 }
 
 mod infrastructure {
-    #[tracing::instrument]
+    #[tracing::instrument(ret)]
     pub(super) fn repository(id: &str) {
         tracing::error!("call repository");
     }
