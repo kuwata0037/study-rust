@@ -9,6 +9,8 @@ edition.workspace = true
 [dependencies]
 anyhow = { version = "1.0.82", features = ["backtrace"] }
 thiserror = "1.0.58"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["json", "env-filter"] }
 
 [dev-dependencies]
 config = "0.14.0"
