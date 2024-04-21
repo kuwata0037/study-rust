@@ -31,11 +31,12 @@ jobs:
           tool: cargo-nextest, cargo-llvm-cov
       - name: Run test
         run: cargo llvm-cov nextest --workspace --lcov --output-path lcov.info
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
         if: matrix.os == 'ubuntu-latest'
         with:
           files: ./lcov.info
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
       - uses: coverallsapp/github-action@v2
         if: matrix.os == 'ubuntu-latest'
         with:
