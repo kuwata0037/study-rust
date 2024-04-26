@@ -1,3 +1,18 @@
+//! tracing の動作確認
+//!
+//! ## 実行方法
+//!
+//! ### 通常実行
+//!
+//! ```bash
+//! cargo run --bin tracing
+//! ```
+//!
+//! ### ログレベルを指定しての実行
+//!
+//! ```bash
+//! RUST_LOG=info cargo run --bin tracing
+//! ```
 use tracing_subscriber::layer::SubscriberExt;
 
 #[derive(Debug)]
