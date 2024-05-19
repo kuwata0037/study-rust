@@ -5,13 +5,13 @@
 //! ### 通常実行
 //!
 //! ```bash
-//! cargo run --bin tracing
+//! cargo run --example tracing
 //! ```
 //!
 //! ### ログレベルを指定しての実行
 //!
 //! ```bash
-//! RUST_LOG=info cargo run --bin tracing
+//! RUST_LOG=info cargo run --example tracing
 //! ```
 use tracing_subscriber::layer::SubscriberExt;
 
