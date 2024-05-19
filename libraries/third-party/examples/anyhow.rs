@@ -5,13 +5,13 @@
 //! ### 通常実行
 //!
 //! ```bash
-//! cargo run --bin anyhow
+//! cargo run --example anyhow
 //! ```
 //!
 //! ### バックトレース付き実行
 //!
 //! ```bash
-//! env RUST_BACKTRACE=1 cargo run --bin anyhow
+//! env RUST_BACKTRACE=1 cargo run --example anyhow
 //! ```
 use anyhow::Context as _;
 

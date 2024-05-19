@@ -3,7 +3,7 @@
 //! ## 実行方法
 //!
 //! ```bash
-//! cargo run --bin thiserror
+//! cargo run --example thiserror
 //! ```
 use std::num::{ParseFloatError, ParseIntError, TryFromIntError};
 
