@@ -4,6 +4,7 @@ mod tests {
     trait MyTrait {
         fn foo(&self) -> u32;
         fn bar(&self, x: u32, y: u32) -> u32;
+        #[allow(dead_code)]
         fn static_generic_method<T: IntoIterator<Item = u32> + 'static>(&self, iter: T) -> u32;
     }
 

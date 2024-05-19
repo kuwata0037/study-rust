@@ -143,7 +143,7 @@ mod tests {
         let database_url = std::env::var("DATABASE_URL").expect("undefined [DATABASE_URL]");
         let pool = PgPool::connect(&database_url)
             .await
-            .expect(&format!("fail connect database"));
+            .unwrap_or_else(|_| panic!("fail connect database"));
         let repository = TodoRepositoryForPostgres::new(pool);
 
         let todo_text = "[crud_scenario] text";

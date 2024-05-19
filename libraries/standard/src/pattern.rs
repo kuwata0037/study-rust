@@ -97,7 +97,7 @@ mod tests {
 
     #[test]
     fn test_destructuring_reference() {
-        let v = vec![Point::new(0, 0), Point::new(1, 5), Point::new(10, -3)];
+        let v = [Point::new(0, 0), Point::new(1, 5), Point::new(10, -3)];
         let sum = v.iter().map(|&Point { x, y }| x * x + y * y).sum::<i32>();
         assert_eq!(sum, 135);
     }
