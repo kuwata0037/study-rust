@@ -2,6 +2,8 @@ use std::net::{Ipv4Addr, SocketAddr};
 
 pub mod pb {
     pub mod schema {
+        pub const FILE_DESCRIPTOR_SET: &[u8] = tonic::include_file_descriptor_set!("descriptor");
+
         tonic::include_proto!("_include");
     }
 }
@@ -48,10 +50,15 @@ pub mod service {
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
     tracing_subscriber::fmt().pretty().try_init()?;
 
+    let reflection_server = tonic_reflection::server::Builder::configure()
+        .register_encoded_file_descriptor_set(pb::schema::FILE_DESCRIPTOR_SET)
+        .build()?;
+
     let addr = SocketAddr::from((Ipv4Addr::LOCALHOST, 50051));
 
     tracing::info!(%addr, "start server");
     tonic::transport::Server::builder()
+        .add_service(reflection_server)
         .add_service(service::example::v1::GreeterServiceImpl::server())
         .serve_with_shutdown(addr, shutdown_signal())
         .await?;
