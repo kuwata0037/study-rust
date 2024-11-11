@@ -1,4 +1,4 @@
-# Study Rust
+# Learning Rust
 
 [![CI](https://github.com/kuwata0037/study-rust/actions/workflows/ci.yaml/badge.svg)](https://github.com/kuwata0037/study-rust/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/kuwata0037/study-rust/branch/main/graph/badge.svg?token=0OC3MY7OY6)](https://codecov.io/gh/kuwata0037/study-rust)
